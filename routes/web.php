@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\landingpageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainerWorkoutController;
 use App\Http\Controllers\TrainerHomeController;
 use App\Http\Controllers\TrainerMealplanController;
 use App\Http\Controllers\TrainerProgressController;
-
-
-
 use App\Http\Controllers\TraineeWorkoutController;
 
+
+Route::get('/', [landingpageController::class, 'index']);
+Route::get('/contact', [landingpageController::class, 'contact']);
 Route::get('/trainer/workout', [TrainerWorkoutController::class, 'index'])->name('trainer.workout');
 Route::post('/trainer/workout', [TrainerWorkoutController::class, 'handleForm']);
 Route::get('/trainer/home', [TrainerHomeController::class, 'index'])->name('trainer.home');
