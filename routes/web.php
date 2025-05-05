@@ -9,7 +9,10 @@ use App\Http\Controllers\TrainerWorkoutController;
 use App\Http\Controllers\TrainerHomeController;
 use App\Http\Controllers\TrainerMealplanController;
 use App\Http\Controllers\TrainerProgressController;
+
+use App\Http\Controllers\TraineeHomeController;
 use App\Http\Controllers\TraineeWorkoutController;
+use App\Http\Controllers\TraineeMealplanController;
 
 
 Route::get('/', [landingpageController::class, 'index']);
@@ -30,4 +33,7 @@ Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->n
 Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
 
 
+Route::get('/trainee/home', [TraineeHomeController::class, 'showHome'])->name('trainee/home');
+Route::post('/trainee/home', [TraineeHomeController::class, 'calculateBMI']);
 Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
+Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('mealplan');
