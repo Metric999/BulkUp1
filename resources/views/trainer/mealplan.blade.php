@@ -100,7 +100,7 @@
 
     <div class="mt-6 text-right">
       <button type="submit" class="bg-green-500 hover:bg-green-600 transition text-white font-semibold px-6 py-3 rounded-full shadow">
-        ➕ Simpan Meal Plan
+        ➕ Save Meal Plan
       </button>
     </div>
   </form>
