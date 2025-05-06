@@ -8,7 +8,7 @@ class TrainerHomeController extends Controller
 {
     public function index()
     {
-        // Simulasi data (nanti bisa diganti dengan data dari database)
+        // Simulasi data
         $trainerName = "Coach";
         $trainees = [
             ["id" => "1", "name" => "Andre"],
@@ -17,15 +17,9 @@ class TrainerHomeController extends Controller
         ];
 
         $totalTrainees = count($trainees);
-        $totalWorkoutPlans = 12; // Dummy data
-        $totalMealPlans = 9;
+        $totalWorkoutPlans = 12;  // Bisa diganti dengan perhitungan dinamis
+        $totalMealPlans = 9;      // Sama seperti di atas
 
-        return view('trainer.home', compact(
-            'trainerName',
-            'trainees',
-            'totalTrainees',
-            'totalWorkoutPlans',
-            'totalMealPlans'
-        ));
+        return view('trainer.home', compact('trainerName', 'trainees', 'totalTrainees', 'totalWorkoutPlans', 'totalMealPlans'));
     }
 }
