@@ -9,12 +9,21 @@ use App\Http\Controllers\TrainerWorkoutController;
 use App\Http\Controllers\TrainerHomeController;
 use App\Http\Controllers\TrainerMealplanController;
 use App\Http\Controllers\TrainerProgressController;
-
 use App\Http\Controllers\TraineeHomeController;
 use App\Http\Controllers\TraineeWorkoutController;
 use App\Http\Controllers\TraineeMealplanController;
+use App\Http\Controllers\TraineeFeedbackController;
+use App\Http\Controllers\TraineeNotificationController;
+use App\Http\Controllers\TrainerNotificationController;
+use App\Http\Controllers\TrainerProfileController;
 
 
+Route::get('trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
+Route::post('trainer/notification', [TrainerNotificationController::class, 'update'])->name('trainer.notification.update');
+Route::get('trainee/notification', [TraineeNotificationController::class, 'index'])->name('trainee.notification');
+Route::post('trainee/notification', [TraineeNotificationController::class, 'store'])->name('trainee.notification.store');
+Route::get('trainee/feedback', [TraineeFeedbackController::class, 'showForm'])->name('trainee.feedback');
+Route::post('trainee/feedback', [TraineeFeedbackController::class, 'submitForm'])->name('trainee.feedback.submit');
 Route::get('/', [landingpageController::class, 'index']);
 Route::get('/contact', [landingpageController::class, 'contact']);
 Route::get('/loginregis/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -31,9 +40,8 @@ Route::get('/trainer/home', [TrainerHomeController::class, 'index'])->name('trai
 Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->name('trainer.mealplan');
 Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
 Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
-
-
 Route::get('/trainee/home', [TraineeHomeController::class, 'showHome'])->name('trainee/home');
 Route::post('/trainee/home', [TraineeHomeController::class, 'calculateBMI']);
 Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
 Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('mealplan');
+
