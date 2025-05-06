@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>@yield('title', 'Trainer Home')</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  {{-- Tambahkan ini agar script dari child view bisa masuk --}}
+  @stack('head') 
+
   <script>
     function toggleDropdown() {
       document.getElementById('profileDropdown').classList.toggle('hidden');
@@ -20,12 +24,9 @@
     <a href="{{ route('trainee.workout') }}" class="{{ request()->routeIs('trainee.workout') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Workout</a>
     <a href="{{ route('trainee.mealplan') }}" class="{{ request()->routeIs('trainee.mealplan') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Mealplan</a>
     <div class="relative cursor-pointer">
-
-    <!-- dropdown --->
-
       <div onclick="toggleDropdown()" class="text-white text-xl cursor-pointer">👤</div>
       <div id="profileDropdown" class="absolute right-0 mt-2 hidden bg-gray-700 rounded shadow-md p-4 space-y-2 z-10 w-40">
-      <a href="{{ route('trainee.profile') }}" class="{{ request()->routeIs('trainee.profile') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Profile</a>
+        <a href="{{ route('trainee.profile') }}" class="{{ request()->routeIs('trainee.profile') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Profile</a>
         <a href="{{ route('trainee.notification') }}" class="{{ request()->routeIs('trainee.notification') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Notification</a>
         <a href="{{ route('trainee.feedback') }}" class="{{ request()->routeIs('trainee.feedback') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Feedback</a>
         <a href="#" class="flex items-center space-x-2 hover:underline text-white">Log Out</a>
@@ -38,6 +39,6 @@
 <main class="w-full py-8 px-4 space-y-6">
   @yield('content')
 </main>
-
+@yield('scripts')
 </body>
 </html>

@@ -17,7 +17,7 @@ class TraineeMealplanController extends Controller
             } else {
                 $submitted[] = $toggle;
             }
-            return redirect()->route('mealplan', ['submitted' => implode(',', $submitted)]);
+            return redirect()->route('trainee.mealplan', ['submitted' => implode(',', $submitted)]);
         }
 
         $meals = [

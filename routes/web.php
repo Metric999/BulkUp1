@@ -49,11 +49,11 @@ Route::get('/trainer/home', [TrainerHomeController::class, 'index'])->name('trai
 Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->name('trainer.mealplan');
 Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
 Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
-Route::get('/trainee/home', [TraineeHomeController::class, 'showHome'])->name('trainee/home');
-Route::post('/trainee/home', [TraineeHomeController::class, 'calculateBMI']);
+Route::get('/trainee/home', [TraineeHomeController::class, 'showHome'])->name('trainee.home');
+Route::post('/trainee/bmi', [TraineeHomeController::class, 'calculateBMI'])->name('bmi.calculate');
 Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
-Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('mealplan');
+Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('trainee.mealplan');
 Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name('trainer.profile');
 Route::get('/trainer/profile/edit', [TrainerProfileController::class, 'edit'])->name('trainer.profile.edit');
 Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
-Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('profile');
+Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('trainee.profile');
