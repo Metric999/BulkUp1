@@ -57,3 +57,4 @@ Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name(
 Route::get('/trainer/profile/edit', [TrainerProfileController::class, 'edit'])->name('trainer.profile.edit');
 Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
 Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('trainee.profile');
+Route::get('/trainee/profile/edit', [TraineeProfileController::class, 'edit'])->name('profile.edit');
