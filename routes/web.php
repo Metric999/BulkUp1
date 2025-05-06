@@ -16,6 +16,15 @@ use App\Http\Controllers\TraineeFeedbackController;
 use App\Http\Controllers\TraineeNotificationController;
 use App\Http\Controllers\TrainerNotificationController;
 use App\Http\Controllers\TrainerProfileController;
+use App\Http\Controllers\TrainerFeedbackController;
+use App\Http\Controllers\TraineeProfileController;
+
+
+
+
+
+
+
 
 
 Route::get('trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
@@ -44,4 +53,7 @@ Route::get('/trainee/home', [TraineeHomeController::class, 'showHome'])->name('t
 Route::post('/trainee/home', [TraineeHomeController::class, 'calculateBMI']);
 Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
 Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('mealplan');
-
+Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name('trainer.profile');
+Route::get('/trainer/profile/edit', [TrainerProfileController::class, 'edit'])->name('trainer.profile.edit');
+Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
+Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('profile');

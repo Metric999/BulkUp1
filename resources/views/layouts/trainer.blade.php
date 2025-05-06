@@ -26,9 +26,9 @@
 
       <div onclick="toggleDropdown()" class="text-white text-xl cursor-pointer">👤</div>
       <div id="profileDropdown" class="absolute right-0 mt-2 hidden bg-gray-700 rounded shadow-md p-4 space-y-2 z-10 w-40">
-        <a href="profile_trainer.php" class="flex items-center space-x-2 hover:underline text-white">Profile</a>
-        <a href="notif_trainer.php" class="flex items-center space-x-2 hover:underline text-white">Notifications</a>
-        <a href="feedback_trainer.php" class="flex items-center space-x-2 hover:underline text-white">Feedback</a>
+      <a href="{{ route('trainer.profile') }}" class="{{ request()->routeIs('trainer.profile') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Profile</a>
+        <a href="{{ route('trainer.notification') }}" class="{{ request()->routeIs('trainer.notification') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Notification</a>
+        <a href="{{ route('trainer.feedback') }}" class="{{ request()->routeIs('trainer.feedback') ? 'text-blue-500 underline font-semibold' : 'text-white hover:text-gray-300' }}">Feedback</a>
         <a href="#" class="flex items-center space-x-2 hover:underline text-white">Log Out</a>
       </div>
     </div>
