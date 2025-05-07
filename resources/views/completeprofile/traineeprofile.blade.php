@@ -10,15 +10,15 @@
     body { font-family: 'Poppins', sans-serif; }
   </style>
 </head>
-<body class="bg-[#001F3F] text-gray-900 min-h-screen flex flex-col items-center">
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col items-center">
 
   <!-- Navbar -->
-  <nav class="w-full px-10 py-5 fixed top-0 left-0 z-50 bg-[#000957] shadow">
+  <nav class="w-full px-10 py-5 fixed top-0 left-0 z-50 bg-[#1f2937] shadow">
   <div class="text-white text-2xl font-bold">Bulk<span class="text-blue-400">Up</span></div>
   </nav>
 
   <!-- Main Container -->
-  <div class="mt-28 w-4/5 max-w-5xl bg-[#6A9AB0] rounded-xl shadow-lg flex flex-col md:flex-row p-10 gap-10">
+  <div class="mt-28 w-4/5 max-w-5xl bg-wheat-100 rounded-xl shadow-lg flex flex-col md:flex-row p-10 gap-10">
 
     <!-- Left Side -->
     <div class="flex-1 text-center">
@@ -73,7 +73,7 @@
                  class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500">
         </div>
         <button type="submit"
-                class="mt-6 bg-[#F5F5F5] hover:bg-[#4379F2] text-black px-6 py-2 rounded-md mx-auto block">
+                class="mt-6 bg-[#1f2937] hover:bg-[#4379F2] text-white px-6 py-2 rounded-md mx-auto block">
           Save profile
         </button>
       </form>

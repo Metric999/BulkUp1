@@ -41,7 +41,7 @@
     <h1 class="text-4xl md:text-6xl font-bold mb-4">Hello, Welcome to BulkUp</h1>
     <p class="text-lg md:text-xl">Ready to build your dream body? Join now and</p>
     <p class="text-lg md:text-xl mb-6">start your bulking journey with BulkUp!</p>
-    <a href="login" class="bg-white text-black px-6 py-3 rounded-full font-semibold hover:text-red-800 transition">Get Started</a>
+    <a href="/loginregis/login" class="bg-white text-black px-6 py-3 rounded-full font-semibold hover:text-red-800 transition">Get Started</a>
   </div>
 </section>
 
@@ -74,9 +74,9 @@
       <h3 class="text-xl font-bold mb-4">Quick links</h3>
       <ul class="space-y-2">
         <li><a href="#home" class="hover:underline">➤ Home</a></li>
-        <li><a href="login.php" class="hover:underline">➤ Workouts</a></li>
-        <li><a href="login.php" class="hover:underline">➤ Progress</a></li>
-        <li><a href="login.php" class="hover:underline">➤ MealPlan</a></li>
+        <li><a href="/loginregis/login" class="hover:underline">➤ Workouts</a></li>
+        <li><a href="/loginregis/login" class="hover:underline">➤ Progress</a></li>
+        <li><a href="/loginregis/login" class="hover:underline">➤ MealPlan</a></li>
       </ul>
     </div>
     <div>

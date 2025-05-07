@@ -10,8 +10,8 @@ class TrainerProfileController extends Controller
     {
         // Dummy data untuk ditampilkan di view
         $data = [
-            'trainerName' => 'John Doe',
-            'email' => 'johndoe@bulkup.com',
+            'trainerName' => 'Michael',
+            'email' => 'michael@gmail.com',
             'phone' => '+62 812 3456 7890',
             'specialty' => 'Muscle Gain & Nutrition',
             'bio' => 'Certified personal trainer with 10+ years of experience helping clients achieve their fitness goals.'

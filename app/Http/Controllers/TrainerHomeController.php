@@ -9,7 +9,7 @@ class TrainerHomeController extends Controller
     public function index()
     {
         // Simulasi data
-        $trainerName = "Coach";
+        $trainerName = "Michael";
         $trainees = [
             ["id" => "1", "name" => "Andre"],
             ["id" => "2", "name" => "Marwan"],
