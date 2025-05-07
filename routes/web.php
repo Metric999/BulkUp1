@@ -50,7 +50,7 @@ Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->na
 Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
 Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
 Route::get('/trainee/home', [TraineeHomeController::class, 'showHome'])->name('trainee.home');
-Route::post('/trainee/bmi', [TraineeHomeController::class, 'calculateBMI'])->name('bmi.calculate');
+Route::post('/trainee/home', [TraineeHomeController::class, 'calculateBMI']);
 Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
 Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('trainee.mealplan');
 Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name('trainer.profile');
