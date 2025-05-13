@@ -20,13 +20,6 @@ use App\Http\Controllers\TrainerFeedbackController;
 use App\Http\Controllers\TraineeProfileController;
 
 
-
-
-
-
-
-
-
 Route::get('trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
 Route::post('trainer/notification', [TrainerNotificationController::class, 'update'])->name('trainer.notification.update');
 Route::get('trainee/notification', [TraineeNotificationController::class, 'index'])->name('trainee.notification');
@@ -39,7 +32,7 @@ Route::get('/loginregis/login', [AuthController::class, 'showLoginForm'])->name(
 Route::post('/loginregis/login', [AuthController::class, 'login']);
 Route::get('/loginregis/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/loginregis/register', [AuthController::class, 'register']);
-Route::get('/completeprofile/traineeprofile', [TraineeCompleteProfileController::class, 'showProfileForm'])->name('profile');
+Route::get('/comppleteprofile/traineeprofile', [TraineeCompleteProfileController::class, 'showProfileForm'])->name('profile');
 Route::post('/completeprofile/traineeprofile', [TraineeCompleteProfileController::class, 'saveProfile']);
 Route::get('/completeprofile/trainerprofile', [TrainerCompleteProfileController::class, 'showProfileForm'])->name('trainer.profile');
 Route::post('/completeprofile/trainerprofile', [TrainerCompleteProfileController::class, 'saveProfile']);
