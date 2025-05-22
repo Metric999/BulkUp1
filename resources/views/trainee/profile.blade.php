@@ -15,15 +15,16 @@
         <input type="file" id="upload-photo" class="hidden" accept="image/*">
       </div>
       <div class="flex-1">
-        <h2 class="text-3xl font-bold text-gray-800">Remon</h2>
+      <h2 class="text-3xl font-bold text-gray-800">{{ $user->username }}</h2>
 
-        <div class="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700">
-          <p><span class="font-semibold">Gender:</span> Male</p>
-          <p><span class="font-semibold">Age:</span> 27</p>
-          <p><span class="font-semibold">Height:</span> 180 cm</p>
-          <p><span class="font-semibold">Weight:</span> 75 kg</p>
-          <p><span class="font-semibold">Trainer:</span> Michael</p>
-        </div>
+      <div class="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700">
+        <p><span class="font-semibold">Gender:</span> {{ $profile->gender }}</p>
+        <p><span class="font-semibold">Age:</span> {{ $profile->age }}</p>
+        <p><span class="font-semibold">Height:</span> {{ $profile->height }} cm</p>
+        <p><span class="font-semibold">Weight:</span> {{ $profile->weight }} kg</p>
+        <p><span class="font-semibold">Trainer:</span> {{ $profile->trainer_name ?? 'Belum ditentukan' }}</p>
+      </div>
+
 
         <div class="mt-6">
           <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">

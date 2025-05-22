@@ -4,49 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Profile;
 
 class TraineeCompleteProfileController extends Controller
 {
-    public function showProfileForm()
-    {
-        return view('completeprofile/traineeprofile'); // File HTML kamu simpan sebagai traineeprofile.blade.php
-    }
+    public function show() 
+{
+    $user = Auth::user();
+    $profile = $user->profile;
 
-    public function saveProfile(Request $request)
+    return view('completeprofile.traineeprofile', compact('profile'));
+}
+
+    public function update(Request $request)
     {
+        $user = Auth::user();
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'gender' => 'required|in:Male,Female',
-            'dob' => 'required|integer|min:0',
-            'height' => 'required|numeric|min:0',
-            'weight' => 'required|numeric|min:0',
+            'age' => 'required|integer|min:10',
+            'height' => 'required|integer|min:50',
+            'weight' => 'required|integer|min:20',
             'goals' => 'nullable|string|max:255',
             'trainer' => 'nullable|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // foto optional
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Handle photo upload
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('uploads/trainee', 'public');
-        } else {
-            $photoPath = 'uploads/default.png'; // default photo
+            $file = $request->file('photo');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $path = $file->storeAs('uploads', $filename, 'public');
+            $validated['photo'] = $path;
         }
 
-        // Save profile data (Contoh: update ke user login)
-        $user = Auth::user();
-        $user->update([
-            'name' => $validated['name'],
-            'gender' => $validated['gender'],
-            'dob' => $validated['dob'],
-            'height' => $validated['height'],
-            'weight' => $validated['weight'],
-            'goals' => $validated['goals'],
-            'trainer' => $validated['trainer'],
-            'photo' => $photoPath,
-        ]);
+        // Update or create profile
+        $profile = Profile::updateOrCreate(
+            ['user_id' => $user->id],
+            array_merge($validated, ['user_id' => $user->id])
+        );
 
-        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+        return redirect()->route('profile.show')->with('success', 'Profile updated successfully');
     }
 }
 

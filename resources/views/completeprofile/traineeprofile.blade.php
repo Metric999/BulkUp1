@@ -33,7 +33,7 @@
     <!-- Right Side -->
     <div class="flex-2 w-full">
       <h2 class="text-2xl font-semibold text-center mb-6 text-black">Complete Your Profile</h2>
-      <form method="POST" action="{{ route('profile') }}" enctype="multipart/form-data" class="space-y-4">@csrf
+      <form method="POST" action="{{ route('profile.show') }}" enctype="multipart/form-data" class="space-y-4">@csrf
         <div>
           <label for="name" class="block font-semibold mb-1">Name</label>
           <input type="text" id="name" name="name" placeholder="Enter name" required

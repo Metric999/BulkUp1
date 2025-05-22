@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/trainee/home');
         }
 
         return back()->withErrors([
@@ -54,6 +54,6 @@ class AuthController extends Controller
         // Auto-login setelah register
         Auth::login($user);
 
-        return redirect('/dashboard');
+        return redirect('/loginregis.login');
     }
 }
