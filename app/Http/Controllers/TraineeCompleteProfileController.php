@@ -44,7 +44,7 @@ class TraineeCompleteProfileController extends Controller
             array_merge($validated, ['user_id' => $user->id])
         );
 
-        return redirect()->route('profile.show')->with('success', 'Profile updated successfully');
+        return redirect()->route('profile.complete')->with('success', 'Profile updated successfully');
     }
 }
 

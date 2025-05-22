@@ -54,6 +54,6 @@ class AuthController extends Controller
         // Auto-login setelah register
         Auth::login($user);
 
-        return redirect('/loginregis.login');
+        return redirect('login');
     }
 }

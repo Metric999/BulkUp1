@@ -18,6 +18,7 @@
       <h2 class="text-3xl font-bold text-gray-800">{{ $user->username }}</h2>
 
       <div class="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700">
+        <p><span class="font-semibold">Name:</span> {{ $profile->name }}</p>
         <p><span class="font-semibold">Gender:</span> {{ $profile->gender }}</p>
         <p><span class="font-semibold">Age:</span> {{ $profile->age }}</p>
         <p><span class="font-semibold">Height:</span> {{ $profile->height }} cm</p>
