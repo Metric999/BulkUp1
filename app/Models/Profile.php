@@ -10,7 +10,7 @@ class Profile extends Model
         'user_id', 'name', 'gender', 'age', 'height', 'weight', 'goals', 'trainer', 'photo',
     ];
 
-    // Relasi ke User
+    // Relasi ke User ok
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -6,7 +6,7 @@
   <title>Complete Your Profile - BulkUp</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Flowbite CSS and JS -->
+  <!-- Flowbite CSS and JS ok -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
   <style>

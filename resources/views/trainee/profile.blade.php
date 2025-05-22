@@ -5,7 +5,7 @@
 @section('content')
 <body class="bg-gradient-to-br from-blue-50 to-white min-h-screen font-sans">
   <div class="max-w-4xl mx-auto p-6">
-    <!-- Profile Header -->
+    <!-- Profile Header ok -->
     <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6 relative">
       <div class="relative">
         <img src="{{ asset('uploads/user_photo.jpg') }}" alt="Profile Photo" class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover">

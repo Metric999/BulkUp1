@@ -112,7 +112,7 @@
           </div>
         </div>
 
-        <!-- Submit Button -->
+        <!-- Submit Button ok -->
         <button type="submit"
                 class="mt-6 bg-[#1f2937] hover:bg-[#4379F2] text-white px-6 py-2 rounded-md mx-auto block">
           Save Profile

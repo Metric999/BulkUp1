@@ -38,7 +38,7 @@ class TraineeCompleteProfileController extends Controller
             $validated['photo'] = $path;
         }
 
-        // Update or create profile
+        // Update or create profile ok
         $profile = Profile::updateOrCreate(
             ['user_id' => $user->id],
             array_merge($validated, ['user_id' => $user->id])

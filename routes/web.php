@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/completeprofile/trainerprofile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainer.profile.complete.store');
 
     // ------------------------
-    // Routes Requiring Complete Profile
+    // Routes Requiring Complete Profile ok
     // ------------------------
 
     Route::middleware(CheckProfileComplete::class)->group(function () {

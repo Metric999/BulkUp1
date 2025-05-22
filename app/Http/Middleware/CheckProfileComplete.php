@@ -13,7 +13,7 @@ class CheckProfileComplete
         $user = Auth::user();
     
         if ($user && !$user->profile) {
-            // Cek kalau request bukan ke halaman lengkapin profile dan bukan logout
+            // Cek kalau request bukan ke halaman lengkapin profile dan bukan logout ok
             if (!$request->is('completeprofile/traineeprofile') && !$request->is('logout')) {
                 return redirect()->route('profile.complete');
             }

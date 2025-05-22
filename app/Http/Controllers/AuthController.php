@@ -51,7 +51,7 @@ class AuthController extends Controller
             'email' => $validated['email'],
         ]);
 
-        // Auto-login setelah register
+        // Auto-login setelah register okok
         Auth::login($user);
 
         return redirect('login');
