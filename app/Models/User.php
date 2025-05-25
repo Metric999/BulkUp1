@@ -10,11 +10,15 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'username', 'email', 'password',
+        'username',
+        'email',
+        'password',
+        'role',  // sudah ditambahkan
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public function profile()

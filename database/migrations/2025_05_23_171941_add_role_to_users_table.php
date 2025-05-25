@@ -9,18 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('name');
+            // Tambahkan kolom 'role' dengan default 'trainee'
+            $table->string('role')->default('trainee')->after('email');
         });
     }
-    
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->nullable();
+            // Hapus kolom 'role' jika rollback
+            $table->dropColumn('role');
         });
     }
-    
 };

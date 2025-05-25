@@ -34,7 +34,7 @@
     <div class="flex-2 w-full">
       <h2 class="text-2xl font-semibold text-center mb-6 text-black">Complete Your Profile</h2>
       
-      <form method="POST" action="{{ route('profile.complete.store') }}" enctype="multipart/form-data" class="space-y-4">
+      <form method="POST" action="{{ route('trainee.profile.complete') }}" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -91,26 +91,23 @@
             @enderror
           </div>
 
-          <!-- Goals -->
-          <div>
-            <label for="goals" class="block font-semibold mb-1">Training Goals</label>
-            <input type="text" id="goals" name="goals" value="{{ old('goals') }}"
-                   class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500">
-            @error('goals')
+            <!-- Trainer -->
+          <div class="md:col-span-2">
+            <label for="trainer" class="block font-semibold mb-1">Trainer</label>
+            <select id="trainer" name="trainer_id"
+                    class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+              <option value="">-- Select Trainer --</option>
+              @foreach ($trainers as $trainer)
+                <option value="{{ $trainer->id }}" {{ old('trainer_id') == $trainer->id ? 'selected' : '' }}>
+                  {{ $trainer->name }}
+                </option>
+              @endforeach
+            </select>
+            @error('trainer_id')
               <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
           </div>
 
-          <!-- Trainer -->
-          <div class="md:col-span-2">
-            <label for="trainer" class="block font-semibold mb-1">Trainer</label>
-            <input type="text" id="trainer" name="trainer" value="{{ old('trainer') }}"
-                   class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500">
-            @error('trainer')
-              <p class="text-red-500 text-sm">{{ $message }}</p>
-            @enderror
-          </div>
-        </div>
 
         <!-- Submit Button ok -->
         <button type="submit"
@@ -131,6 +128,7 @@
       reader.readAsDataURL(event.target.files[0]);
     }
   </script>
-
+  <!-- alert -->
+   
 </body>
 </html>

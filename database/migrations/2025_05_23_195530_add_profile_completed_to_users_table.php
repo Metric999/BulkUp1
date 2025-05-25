@@ -9,19 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('username')->unique()->after('id');
+            $table->boolean('profile_completed')->default(false)->after('role');
         });
-    }   
+    }
+
     /**
      * Reverse the migrations.
      */
-    public function down()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn('username');
-    });
-}
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('profile_completed');
+        });
+    }
 };

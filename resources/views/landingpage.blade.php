@@ -47,6 +47,7 @@
       <p class="text-lg md:text-xl">Ready to build your dream body? Join now and</p>
       <p class="text-lg md:text-xl mb-6">start your bulking journey with BulkUp!</p>
       <a href="/loginregis/login" class="bg-white text-black px-6 py-3 rounded-full font-semibold hover:text-red-800 transition">Get Started</a>
+      <a href="/loginregis/invite" class="bg-white text-black px-6 py-3 rounded-full font-semibold hover:text-red-800 transition">Register as Trainer</a>
     </div>
   </section>
 

@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
+use App\Models\User;
 
 class TraineeCompleteProfileController extends Controller
 {
     public function show() 
-{
-    $user = Auth::user();
-    $profile = $user->profile;
+    {
+        $user = Auth::user();
+        $profile = $user->profile;
 
-    return view('completeprofile.traineeprofile', compact('profile'));
-}
+        // Ambil list trainer untuk select option
+        $trainers = User::where('role', 'trainer')->get();
+
+        return view('completeprofile.traineeprofile', compact('profile', 'trainers'));
+    }
 
     public function update(Request $request)
     {
@@ -26,8 +30,7 @@ class TraineeCompleteProfileController extends Controller
             'age' => 'required|integer|min:10',
             'height' => 'required|integer|min:50',
             'weight' => 'required|integer|min:20',
-            'goals' => 'nullable|string|max:255',
-            'trainer' => 'nullable|string|max:255',
+            'trainer_id' => 'required|exists:users,id',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -38,13 +41,15 @@ class TraineeCompleteProfileController extends Controller
             $validated['photo'] = $path;
         }
 
-        // Update or create profile ok
+        // Pastikan user_id selalu diset
+        $validated['user_id'] = $user->id;
+
+        // Update or create profile
         $profile = Profile::updateOrCreate(
             ['user_id' => $user->id],
-            array_merge($validated, ['user_id' => $user->id])
+            $validated
         );
 
-        return redirect()->route('profile.complete')->with('success', 'Profile updated successfully');
+        return redirect('/trainee/home')->with('success', 'Profile updated successfully');
     }
 }
-
