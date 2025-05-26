@@ -21,35 +21,37 @@ class TraineeCompleteProfileController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'gender' => 'required|in:Male,Female',
-            'age' => 'required|integer|min:10',
-            'height' => 'required|integer|min:50',
-            'weight' => 'required|integer|min:20',
-            'trainer_id' => 'required|exists:users,id',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'gender' => 'required|in:Male,Female',
+        'age' => 'required|integer|min:10',
+        'height' => 'required|integer|min:50',
+        'weight' => 'required|integer|min:20',
+        'trainer_id' => 'required|exists:users,id',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $path = $file->storeAs('uploads', $filename, 'public');
-            $validated['photo'] = $path;
-        }
-
-        // Pastikan user_id selalu diset
-        $validated['user_id'] = $user->id;
-
-        // Update or create profile
-        $profile = Profile::updateOrCreate(
-            ['user_id' => $user->id],
-            $validated
-        );
-
-        return redirect('/trainee/home')->with('success', 'Profile updated successfully');
+    if ($request->hasFile('photo')) {
+        $file = $request->file('photo');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $path = $file->storeAs('uploads', $filename, 'public');
+        $validated['photo'] = $path;
     }
+
+    $validated['user_id'] = $user->id;
+
+    Profile::updateOrCreate(
+        ['user_id' => $user->id],
+        $validated
+    );
+
+    // ✅ Tandai profile sudah lengkap
+    $user->profile_completed = true;
+    $user->save();
+
+    return redirect('/trainee/home')->with('success', 'Profile updated successfully');
+}
 }

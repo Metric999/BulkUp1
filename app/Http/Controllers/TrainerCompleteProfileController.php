@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\TrainerProfile;
 
 class TrainerCompleteProfileController extends Controller
 {
@@ -28,31 +29,28 @@ class TrainerCompleteProfileController extends Controller
         $user = Auth::user();
 
         // Handle photo upload
+        $photoPath = null;
         if ($request->hasFile('photo')) {
-            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-                Storage::disk('public')->delete($user->photo);
-            }
             $photoPath = $request->file('photo')->store('uploads/trainers', 'public');
-        } else {
-            $photoPath = $user->photo;
         }
 
-        // Update user
-        $user->update([
-            'name'              => $validated['name'],
-            'gender'            => $validated['gender'],
-            'dob'               => $validated['dob'],
-            'height'            => $validated['height'],
-            'weight'            => $validated['weight'],
-            'about'             => $validated['about'] ?? null,
-            'photo'             => $photoPath,
-            'profile_completed' => true,
-        ]);
+        // Simpan ke tabel trainer_profiles
+        TrainerProfile::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'name'   => $validated['name'],
+                'gender' => $validated['gender'],
+                'dob'    => $validated['dob'],
+                'height' => $validated['height'],
+                'weight' => $validated['weight'],
+                'about'  => $validated['about'] ?? null,
+                'photo'  => $photoPath,
+            ]
+        );
 
-        // Refresh user session
-        $user->refresh(); // ambil ulang data dari DB
-        Auth::setUser($user); // set ulang ke auth agar middleware tahu
+        // Tandai profil user sudah lengkap
+        $user->update(['profile_completed' => true]);
 
-        return redirect()->route('trainer.home')->with('success', 'Trainer profile updated and completed!');
+        return redirect()->route('trainer.home')->with('success', 'Trainer profile saved!');
     }
 }

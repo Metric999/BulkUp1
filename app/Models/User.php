@@ -13,7 +13,15 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'role',  // sudah ditambahkan
+        'role',
+        'name',
+        'gender',
+        'dob',
+        'height',
+        'weight',
+        'about',
+        'photo',
+        'profile_completed',
     ];
 
     protected $hidden = [
@@ -25,4 +33,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+
+    public function trainerProfile()
+    {
+    return $this->hasOne(TrainerProfile::class);
+    }
 }
+
