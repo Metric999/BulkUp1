@@ -26,7 +26,7 @@
           <p><span class="font-semibold">Age:</span> {{ $profile->age ?? '-' }}</p>
           <p><span class="font-semibold">Height:</span> {{ $profile->height ?? '-' }} cm</p>
           <p><span class="font-semibold">Weight:</span> {{ $profile->weight ?? '-' }} kg</p>
-          <p><span class="font-semibold">Trainer:</span> {{ $profile->trainer->name ?? 'Not Assigned' }}</p>
+          <p><span class="font-semibold">Trainer:</span> {{ $profile->trainer->username ?? 'Not Assigned' }}</p>
         </div>
 
         <div class="mt-6">

@@ -98,11 +98,12 @@
                     class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500">
               <option value="">-- Select Trainer --</option>
               @foreach ($trainers as $trainer)
-                <option value="{{ $trainer->id }}" {{ old('trainer_id') == $trainer->id ? 'selected' : '' }}>
-                  {{ $trainer->name }}
+                <option value="{{ $trainer->id }}" {{ (old('trainer_id', $profile->trainer_id ?? '') == $trainer->id) ? 'selected' : '' }}>
+                  {{ $trainer->username }}
                 </option>
               @endforeach
             </select>
+
             @error('trainer_id')
               <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror

@@ -9,9 +9,9 @@ class TraineeProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user(); // Ambil data user yang login
-        $profile = $user->profile; // Asumsikan ada relasi 'profile' pada model User
+    $user = Auth::user();
+    $profile = $user->profile()->with('trainer')->first();
 
-        return view('trainee.profile', compact('user', 'profile'));
+    return view('trainee.profile', compact('user', 'profile'));
     }
 }
