@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\TraineeProfile;
+use App\Models\TrainerProfile;
+
 
 class User extends Authenticatable
 {
@@ -29,14 +32,19 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function profile()
+    public function traineeProfile()
     {
     return $this->hasOne(TraineeProfile::class);
     }
-
     public function trainerProfile()
     {
     return $this->hasOne(TrainerProfile::class);
     }
+
+    public function getProfileAttribute()
+    {
+    return $this->role === 'trainer' ? $this->trainerProfile : $this->traineeProfile;
+    }
+
 }
 

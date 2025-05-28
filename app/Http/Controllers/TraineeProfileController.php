@@ -10,7 +10,7 @@ class TraineeProfileController extends Controller
     public function index()
     {
     $user = Auth::user();
-    $profile = $user->profile()->with('trainer')->first();
+    $profile = $user->traineeprofile()->with('trainer')->first();
 
     return view('trainee.profile', compact('user', 'profile'));
     }

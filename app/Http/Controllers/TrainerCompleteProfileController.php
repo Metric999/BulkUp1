@@ -31,7 +31,7 @@ class TrainerCompleteProfileController extends Controller
         // Handle photo upload
         $photoPath = null;
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('uploads/trainers', 'public');
+            $photoPath = $request->file('photo')->store('uploads/trainer', 'public');
         }
 
         // Simpan ke tabel trainer_profiles

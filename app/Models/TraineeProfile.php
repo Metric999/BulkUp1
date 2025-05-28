@@ -17,7 +17,7 @@ class TraineeProfile extends Model
         'height',
         'weight',
         'photo',
-        'trainer_username',
+        'trainer_id',
         
     ];
 

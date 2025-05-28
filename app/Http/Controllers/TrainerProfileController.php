@@ -9,36 +9,39 @@ use Carbon\Carbon;
 
 class TrainerProfileController extends Controller
 {
-    // Tampilkan halaman profile trainer (read-only)
+    // Tampilkan halaman profile trainer
     public function show()
     {
         $user = Auth::user();
+        $profile = $user->trainerProfile; // ambil dari relasi
 
-        $age = $user->dob ? Carbon::parse($user->dob)->age : null;
+        $age = $profile && $profile->dob ? Carbon::parse($profile->dob)->age : null;
 
         return view('trainer.profile', [
-            'trainerName' => $user->name,
-            'gender'      => $user->gender,
-            'dob'         => $age,
-            'height'      => $user->height,
-            'weight'      => $user->weight,
+            'trainerName' => $profile->name,
+            'gender'      => $profile->gender ?? '-',
+            'dob'         => $age ?? '-',
+            'height'      => $profile->height ?? '-',
+            'weight'      => $profile->weight ?? '-',
             'email'       => $user->email,
-            'about'       => $user->about,
-            'photo'       => $user->photo,
+            'about'       => $profile->about ?? '-',
+            'photo'       => $profile->photo ?? 'uploads/default.png',
         ]);
     }
 
-    // Tampilkan form lengkapin profile (edit/complete)
+    // Form untuk melengkapi profil
     public function showCompleteProfileForm()
     {
         $user = Auth::user();
+        $profile = $user->trainerProfile;
 
         return view('completeprofile.trainerprofile', [
-            'user' => $user
+            'user' => $user,
+            'profile' => $profile,
         ]);
     }
 
-    // Simpan data profile lengkap trainer
+    // Simpan data profil trainer
     public function saveCompleteProfile(Request $request)
     {
         $validated = $request->validate([
@@ -52,25 +55,29 @@ class TrainerProfileController extends Controller
         ]);
 
         $user = Auth::user();
+        $profile = $user->trainerProfile ?? $user->trainerProfile()->create([]);
 
+        // Simpan foto
         if ($request->hasFile('photo')) {
-            if ($user->photo && $user->photo !== 'uploads/default.png') {
-                Storage::disk('public')->delete($user->photo);
+            if ($profile->photo && $profile->photo !== 'uploads/default.png') {
+                Storage::disk('public')->delete($profile->photo);
             }
             $photoPath = $request->file('photo')->store('uploads/trainers', 'public');
         } else {
-            $photoPath = $user->photo ?? 'uploads/default.png';
+            $photoPath = $profile->photo ?? 'uploads/default.png';
         }
 
-        $user->update([
-            'name'              => $validated['name'],
-            'gender'            => $validated['gender'],
-            'dob'               => $validated['dob'],
-            'height'            => $validated['height'],
-            'weight'            => $validated['weight'],
-            'about'             => $validated['about'] ?? null,
-            'photo'             => $photoPath,
-            'profile_completed' => true,
+        // Update nama di user
+        $user->update(['name' => $validated['name']]);
+
+        // Update profil trainer
+        $profile->update([
+            'gender' => $validated['gender'],
+            'dob'    => $validated['dob'],
+            'height' => $validated['height'],
+            'weight' => $validated['weight'],
+            'about'  => $validated['about'] ?? null,
+            'photo'  => $photoPath,
         ]);
 
         return redirect()->route('trainer.profile')->with('success', 'Profile successfully updated!');
