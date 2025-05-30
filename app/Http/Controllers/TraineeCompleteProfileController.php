@@ -20,8 +20,8 @@ class TraineeCompleteProfileController extends Controller
         return view('completeprofile.traineeprofile', compact('profile', 'trainers'));
     }
 
-    public function update(Request $request)
-{
+   public function update(Request $request)
+    {
     $user = Auth::user();
 
     $validated = $request->validate([
@@ -48,10 +48,11 @@ class TraineeCompleteProfileController extends Controller
         $validated
     );
 
-    // ✅ Tandai profile sudah lengkap
+    // ✅ Tandai profile sudah lengkap & simpan trainer_id ke users
     $user->profile_completed = true;
+    $user->trainer_id = $request->input('trainer_id');
     $user->save();
 
     return redirect('/trainee/home')->with('success', 'Profile updated successfully');
-}
+    }
 }

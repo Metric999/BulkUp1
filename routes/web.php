@@ -81,6 +81,8 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->name('trainer.mealplan');
     Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
+    Route::post('/trainee/mealplan/submit/{id}', [MealPlanController::class, 'submitMeal'])->name('trainee.mealplan.submit');
+
 
     Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
 

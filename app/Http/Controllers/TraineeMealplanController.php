@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\MealPlan;
+use App\Models\User;
 
 class TraineeMealplanController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $submitted = $request->query('submitted') ? explode(',', $request->query('submitted')) : [];
         $toggle = $request->query('toggle');
 
+        // Toggle meal submitted
         if ($toggle) {
             if (in_array($toggle, $submitted)) {
                 $submitted = array_diff($submitted, [$toggle]);
@@ -20,40 +25,15 @@ class TraineeMealplanController extends Controller
             return redirect()->route('trainee.mealplan', ['submitted' => implode(',', $submitted)]);
         }
 
-        $meals = [
-            [
-                'id' => 'breakfast',
-                'time' => '08:00 - Breakfast',
-                'meal' => 'Oatmeal and Banana',
-                'calories' => '350 kcal',
-                'note' => 'Start your day with energy',
-                'color' => 'yellow',
-            ],
-            [
-                'id' => 'lunch',
-                'time' => '12:00 - Lunch',
-                'meal' => 'Grilled Chicken and Rice',
-                'calories' => '500 kcal',
-                'note' => 'High protein for muscle recovery',
-                'color' => 'blue',
-            ],
-            [
-                'id' => 'dinner',
-                'time' => '19:00 - Dinner',
-                'meal' => 'Steamed Fish and Vegetables',
-                'calories' => '400 kcal',
-                'note' => 'Nutritious end to the day',
-                'color' => 'pink',
-            ],
-            [
-                'id' => 'snack',
-                'time' => '21:00 - Snack',
-                'meal' => 'Greek Yogurt and Almonds',
-                'calories' => '200 kcal',
-                'note' => 'Light snack before bedtime',
-                'color' => 'green',
-            ]
-        ];
+        // Ambil ID trainer dari user login (dari field `trainer_id`)
+        $trainerId = $user->trainer_id;
+
+        // Ambil meal plan untuk trainee login dari trainer yang dipilih, dan untuk hari ini
+        $meals = MealPlan::where('trainee_id', $user->id)
+            ->where('trainer_id', $trainerId)
+            ->whereDate('date', today())
+            ->orderBy('time')
+            ->get();
 
         return view('trainee.mealplan', compact('meals', 'submitted'));
     }

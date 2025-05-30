@@ -16,23 +16,25 @@
   </div>
 
   <!-- Form Pilihan Trainee dan Tanggal -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
-    <div>
-      <label for="trainee" class="block font-semibold mb-1">Choose Trainee</label>
-      <select id="trainee" name="trainee" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-400">
-        <option value="1">Trainee 1 - Andre</option>
-        <option value="2">Trainee 2 - Alam</option>
-        <option value="3">Trainee 3 - Remon</option>
-      </select>
+  <form id="mealForm" action="{{ route('trainer.mealplan.store') }}" method="POST" class="bg-white p-6 rounded-xl shadow-xl border border-gray-200 w-full">
+    @csrf
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 w-full">
+      <div>
+        <label for="trainee" class="block font-semibold mb-1">Choose Trainee</label>
+        <select id="trainee" name="trainee_id" class="form-select w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
+          <option value="">-- Select Trainee --</option>
+          @foreach($trainees as $trainee)
+            <option value="{{ $trainee->id }}">{{ $trainee->username }}</option>
+          @endforeach
+        </select>
+      </div>
+      <div>
+        <label for="mealDate" class="block font-semibold mb-1">Date</label>
+        <input type="date" id="mealDate" name="date" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
+      </div>
     </div>
-    <div>
-      <label for="mealDate" class="block font-semibold mb-1">Date</label>
-      <input type="date" id="mealDate" name="meal_date" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-400">
-    </div>
-  </div>
 
-  <!-- Form Meal Plan -->
-  <form id="mealForm" action="submit_mealplan.php" method="POST" class="bg-white p-6 rounded-xl shadow-xl border border-gray-200 w-full">
+    <!-- Form Meal Plan -->
     <div class="flex items-center mb-4">
       <svg class="w-6 h-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
@@ -45,15 +47,21 @@
         <label class="block font-medium mb-1">Time</label>
         <input type="time" name="time" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
       </div>
-      <div>
-        <label class="block font-medium mb-1">Type (example: Breakfast)</label>
-        <input type="text" name="type" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
+      <div class="mb-4">
+        <label class="block mb-1 font-medium text-sm">Meal Type</label>
+        <select name="type" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300">
+          <option>Breakfast</option>
+          <option>Lunch</option>
+          <option>Dinner</option>
+          <option>Snack</option>
+        </select>
       </div>
     </div>
 
+
     <div class="mt-4 w-full">
       <label class="block font-medium mb-1">Meal Name</label>
-      <input type="text" name="meal" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
+      <input type="text" name="meal_name" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
     </div>
 
     <div class="mt-4 w-full">
@@ -66,8 +74,6 @@
       <textarea name="note" rows="3" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required></textarea>
     </div>
 
-    <input type="hidden" name="trainee_id" id="traineeInput" value="1">
-
     <div class="mt-6 text-right">
       <button type="submit" class="bg-green-500 hover:bg-green-600 transition text-white font-semibold px-6 py-3 rounded-full shadow">
         ➕ Save Meal Plan
@@ -76,18 +82,15 @@
   </form>
 </main>
 
+<!-- ✅ JavaScript validasi tanggal -->
 <script>
   const profileBtn = document.getElementById("profileBtn");
   const dropdownMenu = document.getElementById("dropdownMenu");
-  profileBtn.addEventListener("click", () => {
-    dropdownMenu.classList.toggle("hidden");
-  });
-
-  const traineeSelect = document.getElementById("trainee");
-  const traineeInput = document.getElementById("traineeInput");
-  traineeSelect.addEventListener("change", function () {
-    traineeInput.value = this.value;
-  });
+  if (profileBtn) {
+    profileBtn.addEventListener("click", () => {
+      dropdownMenu.classList.toggle("hidden");
+    });
+  }
 
   const mealForm = document.getElementById("mealForm");
   const dateInput = document.getElementById("mealDate");
@@ -101,15 +104,8 @@
         text: 'Please select a date before submitting!',
         confirmButtonColor: '#f59e0b'
       });
-    } else {
-      e.preventDefault(); // Remove this if using real backend
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: 'Meal has been submitted.',
-        confirmButtonColor: '#10b981'
-      });
     }
+    // ✅ Tidak ada preventDefault di else, supaya data benar-benar tersubmit
   });
 </script>
 @endsection

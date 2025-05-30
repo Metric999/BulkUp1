@@ -46,5 +46,10 @@ class User extends Authenticatable
     return $this->role === 'trainer' ? $this->trainerProfile : $this->traineeProfile;
     }
 
+    public function trainees()
+    {
+    return $this->hasMany(User::class, 'trainer_id');
+    }
+
 }
 

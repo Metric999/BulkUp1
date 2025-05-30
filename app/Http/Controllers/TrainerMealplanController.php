@@ -2,41 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MealPlan;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class TrainerMealplanController extends Controller
+class TrainerMealPlanController extends Controller
 {
     public function index()
     {
-        // Menampilkan halaman meal plan
-        return view('trainer.mealplan');
+        // Ambil trainee yang memilih trainer ini
+        $trainees = User::whereHas('traineeProfile', function ($q) {
+            $q->where('trainer_id', Auth::id());
+        })->get();
+
+        return view('trainer.mealplan', compact('trainees'));
     }
 
     public function store(Request $request)
-    {
-        // Validasi inputan
-        $request->validate([
-            'trainee_id' => 'required|integer',
-            'meal_date' => 'required|date',
-            'time' => 'required',
-            'type' => 'required|string|max:255',
-            'meal' => 'required|string|max:255',
-            'calories' => 'required|integer',
-            'note' => 'nullable|string|max:255',
-        ]);
+{
+    $request->validate([
+        'trainee_id' => 'required|exists:users,id',
+        'date' => 'required|date',
+        'time' => 'required',
+        'type' => 'required|string|max:50',
+        'meal_name' => 'required|string|max:255',
+        'calories' => 'required|numeric',
+        'note' => 'nullable|string',
+    ]);
 
-        // Menyimpan meal plan ke database (contoh menggunakan model MealPlan)
-        // MealPlan::create([
-        //     'trainee_id' => $request->trainee_id,
-        //     'meal_date' => $request->meal_date,
-        //     'time' => $request->time,
-        //     'type' => $request->type,
-        //     'meal' => $request->meal,
-        //     'calories' => $request->calories,
-        //     'note' => $request->note,
-        // ]);
+    MealPlan::create([
+        'trainer_id' => Auth::id(), // ✅ tambahkan ini!
+        'trainee_id' => $request->trainee_id,
+        'date' => $request->date,
+        'time' => $request->time,
+        'type' => $request->type,
+        'meal_name' => $request->meal_name,
+        'calories' => $request->calories,
+        'note' => $request->note,
+    ]);
 
-        // Redirect atau beri feedback
-        return redirect()->route('trainer.mealplan')->with('success', 'Meal Plan has been saved successfully!');
+    return redirect()->back()->with('success', 'Meal plan saved successfully.');
     }
 }
+
