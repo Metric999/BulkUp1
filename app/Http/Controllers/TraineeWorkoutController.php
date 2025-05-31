@@ -3,20 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Workout;
 
 class TraineeWorkoutController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        // Simulasi trainee yang login
-        $traineeId = "1"; // Di project nyata, ganti dengan auth()->id()
-        $traineeName = "Andre"; // Di project nyata, ganti dengan auth()->user()->name
+        $user = Auth::user(); // Dapatkan user yang login (trainee)
 
-        $daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        // Ambil workout berdasarkan trainee_id dan urutkan berdasarkan tanggal
+        $workouts = Workout::where('trainee_id', $user->id)
+            ->orderBy('date')
+            ->get()
+            ->groupBy('day');
 
-        // Ambil workout dari session Laravel (bukan PHP native)
-        $workouts = session("workouts.$traineeId", []);
-
-        return view('trainee.workout', compact('traineeId', 'traineeName', 'daysOfWeek', 'workouts'));
+        return view('trainee.workout', [
+            'traineeName' => $user->name, // Kirim nama trainee ke view
+            'workouts' => $workouts
+        ]);
     }
 }

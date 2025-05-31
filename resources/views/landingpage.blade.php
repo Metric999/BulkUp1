@@ -31,7 +31,7 @@
       <a href="#home" class="nav-link font-semibold hover:text-black transition">Home</a>
       <a href="#about" class="nav-link font-semibold hover:text-black transition">About</a>
       <a href="#contact" class="nav-link font-semibold hover:text-black transition">Contact</a>
-      <a href="loginregis/login" class="bg-white text-red-800 px-5 py-2 rounded-full font-bold hover:text-black transition">Sign Up</a>
+      <a href="loginregis/login" class="bg-white text-red-800 px-5 py-2 rounded-full font-bold hover:text-black transition">Sign In</a>
     </div>
   </nav>
 

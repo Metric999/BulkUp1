@@ -1,91 +1,115 @@
 @extends('layouts.trainer')
 
 @section('content')
-    <h1 class="text-3xl font-bold">Workout Plan - Trainer</h1>
+    <h1 class="text-3xl font-bold mb-4">Workout Plan - Trainer</h1>
 
-    <!-- Pilih Trainee -->
-    <form class="mb-6">
-        <label class="block mb-2 font-semibold">Select Trainee:</label>
-        <select class="w-full p-2 border rounded-md max-w-sm">
-            <!-- Option data harus diisi secara manual atau menggunakan JavaScript -->
-            <option value="1">Trainee 1</option>
-            <option value="2">Trainee 2</option>
-        </select>
-    </form>
+    @if(session('success'))
+        <div class="bg-green-200 p-3 mb-4 rounded text-green-800">
+            {{ session('success') }}
+        </div>
+    @endif
 
-    <!-- Form Tambah Workout -->
-    <div class="bg-white p-6 rounded shadow">
-        <h2 class="text-xl font-semibold mb-4">Add Workout for Trainee Name</h2>
-        <form class="grid grid-cols-2 gap-4">
-            <select class="col-span-2 p-2 border rounded-md">
-                <!-- Daftar hari dalam seminggu -->
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-            </select>
-            <input type="text" placeholder="Workout Name" required class="p-2 border rounded">
-            <input type="text" placeholder="Category" required class="p-2 border rounded">
-            <input type="text" placeholder="Difficulty" required class="p-2 border rounded">
-            <input type="text" placeholder="Reps (e.g. 3x12)" required class="p-2 border rounded">
-            <input type="text" placeholder="Video URL" class="col-span-2 p-2 border rounded">
-            <button type="submit" class="col-span-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Add Workout</button>
+    <div class="bg-white p-6 rounded shadow w-full mb-8">
+        <h2 class="text-xl font-semibold mb-4">Add Workout for Trainee</h2>
+        <form method="POST" action="{{ route('trainer.workout.store') }}" class="space-y-4">
+            @csrf
+
+            <div>
+                <label for="trainee_id" class="block font-medium">Select Trainee</label>
+                <select name="trainee_id" id="trainee_id" required class="w-full p-2 border rounded">
+                    <option value="">-- Select Trainee --</option>
+                    @foreach($trainees as $trainee)
+                        <option value="{{ $trainee->id }}"
+                            {{ request('trainee_id') == $trainee->id ? 'selected' : '' }}>
+                            {{ $trainee->username }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label for="workout_date" class="block font-medium">Workout Date</label>
+                <input type="date" id="workout_date" name="workout_date" required
+                       class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="name" class="block font-medium">Workout Name</label>
+                <input type="text" id="name" name="name" required
+                       class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="category" class="block font-medium">Category</label>
+                <input type="text" id="category" name="category" required
+                       class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="difficulty" class="block font-medium">Difficulty</label>
+                <input type="text" id="difficulty" name="difficulty" required
+                       class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="reps" class="block font-medium">Reps (e.g., 3x12)</label>
+                <input type="text" id="reps" name="reps" required
+                       class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="video_url" class="block font-medium">Video URL (optional)</label>
+                <input type="url" id="video_url" name="video_url"
+                       class="w-full p-2 border rounded" />
+            </div>
+
+            <button type="submit" class="bg-blue-600 text-white py-2 rounded w-full hover:bg-blue-700">
+                Add Workout
+            </button>
         </form>
     </div>
 
-    <!-- Daftar Workout per Hari -->
-    <div class="space-y-6">
-        <div class="bg-white p-6 rounded shadow">
-            <h3 class="text-xl font-bold mb-2">Monday</h3>
-            <p class="text-gray-500">No workouts for this day.</p>
-        </div>
-        <!-- Repeat this block for each day -->
-        <div class="bg-white p-6 rounded shadow">
-            <h3 class="text-xl font-bold mb-2">Tuesday</h3>
-            <div class="mt-4 border-t pt-4">
-                <p class="font-semibold text-lg">Workout Name</p>
-                <p class="text-sm">Category: Category Name</p>
-                <p class="text-sm">Difficulty: Medium</p>
-                <p class="text-sm">Reps: 3x12</p>
-                <div class="flex gap-4 text-sm font-medium mt-2">
-                    <button onclick="openEditModal('Tuesday', 0, 'Workout Name', 'Category Name', 'Medium', '3x12', '')"
-                            class="text-blue-600 hover:underline">Edit</button>
-                    <button onclick="return confirm('Are you sure?')" class="text-red-600 hover:underline text-sm">Delete</button>
-                </div>
-                <div class="aspect-video mt-2">
-                    <iframe src="https://www.youtube.com/embed/video_id" class="w-full h-full rounded" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
+    @if(isset($selectedTrainee))
+        <div class="bg-white p-6 rounded shadow w-full">
+            <h2 class="text-xl font-semibold mb-4">Workout List for {{ $selectedTrainee->username }}</h2>
 
-    <!-- Edit Modal -->
-    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
-        <div class="bg-white p-6 rounded shadow max-w-md w-full">
-            <h2 class="text-xl font-bold mb-4">Edit Workout</h2>
-            <form class="space-y-4">
-                <input type="hidden" id="modal_day">
-                <input type="hidden" id="modal_index">
-                <div>
-                    <label class="block font-medium">Workout Name</label>
-                    <input type="text" id="modal_name" required class="w-full p-2 border rounded">
-                </div>
-                <div>
-                    <label class="block font-medium">Category</label>
-                    <input type="text" id="modal_kategori" required class="w-full p-2 border rounded">
-                </div>
-                <div>
-                    <label class="block font-medium">Difficulty</label>
-                    <input type="text" id="modal_difficult" required class="w-full p-2 border rounded">
-                </div>
-                <div>
-                    <label class="block font-medium">Reps</label>
-                    <input type="text" id="modal_reps" required class="w-full p-2 border rounded">
-                </div>
-                <div>
-                    <label class="block font-medium">Video URL</label>
-                    <input type="text" id="modal_videoUrl" class="w-full p-2 border rounded">
-                </div>
-                <button type="button" class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 w-full">Save Changes</button>
-            </form>
+            @foreach($workouts as $workout)
+                <form method="POST" action="{{ route('trainer.workout.update', $workout->id) }}" class="border-t pt-4 mt-4 space-y-2">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block font-medium">Name</label>
+                        <input type="text" name="name" value="{{ $workout->name }}" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Category</label>
+                        <input type="text" name="category" value="{{ $workout->kategori }}" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Difficulty</label>
+                        <input type="text" name="difficulty" value="{{ $workout->difficult }}" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Reps</label>
+                        <input type="text" name="reps" value="{{ $workout->reps }}" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block font-medium">Video URL</label>
+                        <input type="url" name="video_url" value="{{ $workout->videoUrl }}" class="w-full border p-2 rounded">
+                    </div>
+
+                    <div class="flex space-x-2 pt-2">
+                        <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">Update</button>
+
+                        <form method="POST" action="{{ route('trainer.workout.destroy', $workout->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Delete this workout?')" class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700">Delete</button>
+                        </form>
+                    </div>
+                </form>
+            @endforeach
         </div>
-    </div>
+    @endif
 @endsection

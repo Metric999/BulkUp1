@@ -2,55 +2,102 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Workout;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class TrainerWorkoutController extends Controller
 {
-    private $trainees = [
-        ["id" => "1", "name" => "Andre"],
-        ["id" => "2", "name" => "Marwan"],
-        ["id" => "3", "name" => "Raymond"],
-    ];
-
-    private $daysOfWeek = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-
     public function index(Request $request)
     {
-        $selectedTrainee = $request->session()->get('selected_trainee', $this->trainees[0]['id']);
-        $workouts = Session::get("workouts.$selectedTrainee", []);
+        $trainees = User::whereHas('traineeProfile', function ($q) {
+            $q->where('trainer_id', Auth::id());
+        })->get();
 
-        $traineeName = collect($this->trainees)->firstWhere('id', $selectedTrainee)['name'] ?? 'unknown';
+        $selectedTrainee = null;
+        $workouts = [];
 
-        return view('trainer.workout', [
-            'trainees' => $this->trainees,
-            'selectedTrainee' => $selectedTrainee,
-            'traineeName' => $traineeName,
-            'workouts' => $workouts,
-            'daysOfWeek' => $this->daysOfWeek,
-        ]);
-    }
-
-    public function handleForm(Request $request)
-    {
-        $traineeId = $request->input('trainee_id');
-        Session::put('selected_trainee', $traineeId);
-
-        $action = $request->input('action');
-        $day = $request->input('day');
-        $index = $request->input('index');
-        $workouts = Session::get("workouts.$traineeId", []);
-
-        if ($action === 'add') {
-            $workouts[$day][] = $request->only(['name', 'kategori', 'difficult', 'reps', 'videoUrl']);
-        } elseif ($action === 'edit' && $index !== null) {
-            $workouts[$day][$index] = $request->only(['name', 'kategori', 'difficult', 'reps', 'videoUrl']);
-        } elseif ($action === 'delete' && $index !== null) {
-            unset($workouts[$day][$index]);
-            $workouts[$day] = array_values($workouts[$day]);
+        if ($request->trainee_id) {
+            $selectedTrainee = User::find($request->trainee_id);
+            if ($selectedTrainee) {
+                $workouts = Workout::where('trainee_id', $selectedTrainee->id)
+                    ->orderByDesc('date')
+                    ->get();
+            }
         }
 
-        Session::put("workouts.$traineeId", $workouts);
-        return redirect()->route('trainee.workout');
+        return view('trainer.workout', compact('trainees', 'selectedTrainee', 'workouts'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'trainee_id' => 'required|exists:users,id',
+            'workout_date' => 'required|date',
+            'name' => 'required|string|max:100',
+            'category' => 'required|string|max:100',
+            'difficulty' => 'required|string|max:50',
+            'reps' => 'required|string|max:50',
+            'video_url' => 'nullable|url',
+        ]);
+
+        $day = \Carbon\Carbon::parse($request->workout_date)->format('l');
+
+        Workout::create([
+            'trainer_id' => Auth::id(),
+            'trainee_id' => $request->trainee_id,
+            'day' => $day,
+            'date' => $request->workout_date,
+            'name' => $request->name,
+            'kategori' => $request->category,
+            'difficult' => $request->difficulty,
+            'reps' => $request->reps,
+            'videoUrl' => $request->video_url,
+        ]);
+
+        return redirect()->back()->with('success', 'Workout added successfully.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'category' => 'required|string|max:100',
+            'difficulty' => 'required|string|max:50',
+            'reps' => 'required|string|max:50',
+            'video_url' => 'nullable|url',
+        ]);
+
+        $workout = Workout::findOrFail($id);
+
+        // Cek otorisasi
+        if ($workout->trainer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $workout->update([
+            'name' => $request->name,
+            'kategori' => $request->category,
+            'difficult' => $request->difficulty,
+            'reps' => $request->reps,
+            'videoUrl' => $request->video_url,
+        ]);
+
+        return redirect()->back()->with('success', 'Workout updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $workout = Workout::findOrFail($id);
+
+        // Cek otorisasi
+        if ($workout->trainer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $workout->delete();
+
+        return redirect()->back()->with('success', 'Workout deleted successfully.');
     }
 }

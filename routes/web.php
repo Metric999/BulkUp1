@@ -54,6 +54,8 @@ Route::get('/completeprofile/trainerprofile', [TrainerCompleteProfileController:
 Route::post('/completeprofile/trainerprofile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainer.profile.complete.store');
 
 // Routes that require auth and profile complete middleware
+// ... kode route sebelumnya tetap
+
 Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     // --- Trainee Routes ---
@@ -77,12 +79,13 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainer/home', [TrainerHomeController::class, 'index'])->name('trainer.home');
 
     Route::get('/trainer/workout', [TrainerWorkoutController::class, 'index'])->name('trainer.workout');
-    Route::post('/trainer/workout', [TrainerWorkoutController::class, 'handleForm']);
+    Route::post('/trainer/workout', [TrainerWorkoutController::class, 'store'])->name('trainer.workout.store');
+    Route::put('/trainer/workout/{id}', [TrainerWorkoutController::class, 'update'])->name('trainer.workout.update');
+    Route::delete('/trainer/workout/{id}', [TrainerWorkoutController::class, 'destroy'])->name('trainer.workout.destroy');
 
     Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->name('trainer.mealplan');
     Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
     Route::post('/trainee/mealplan/submit/{id}', [MealPlanController::class, 'submitMeal'])->name('trainee.mealplan.submit');
-
 
     Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
 
@@ -94,5 +97,4 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     Route::get('/trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
     Route::post('/trainer/notification', [TrainerNotificationController::class, 'update'])->name('trainer.notification.update');
-
 });
