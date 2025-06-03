@@ -54,8 +54,6 @@ Route::get('/completeprofile/trainerprofile', [TrainerCompleteProfileController:
 Route::post('/completeprofile/trainerprofile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainer.profile.complete.store');
 
 // Routes that require auth and profile complete middleware
-// ... kode route sebelumnya tetap
-
 Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     // --- Trainee Routes ---
@@ -68,6 +66,7 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('trainee.profile');
     Route::post('/trainee/profile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainee.profile.save');
     Route::get('/trainee/profile/edit', [TraineeProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/trainee/profile/update', [TraineeProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/trainee/notification', [TraineeNotificationController::class, 'index'])->name('trainee.notification');
     Route::post('/trainee/notification', [TraineeNotificationController::class, 'store'])->name('trainee.notification.store');
@@ -82,19 +81,21 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::post('/trainer/workout', [TrainerWorkoutController::class, 'store'])->name('trainer.workout.store');
     Route::put('/trainer/workout/{id}', [TrainerWorkoutController::class, 'update'])->name('trainer.workout.update');
     Route::delete('/trainer/workout/{id}', [TrainerWorkoutController::class, 'destroy'])->name('trainer.workout.destroy');
-
+    
     Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->name('trainer.mealplan');
     Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
-    Route::post('/trainee/mealplan/submit/{id}', [MealPlanController::class, 'submitMeal'])->name('trainee.mealplan.submit');
+    Route::post('/trainee/mealplan/submit/{id}', [TrainerMealPlanController::class, 'submitMeal'])->name('trainee.mealplan.submit');
+
 
     Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
 
     Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name('trainer.profile');
-    Route::post('/trainer/profile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainer.profile.save');
+    Route::post('/trainer/profile/save', [TrainerProfileController::class, 'saveCompleteProfile'])->name('trainer.profile.save');
     Route::get('/trainer/profile/edit', [TrainerProfileController::class, 'edit'])->name('trainer.profile.edit');
 
     Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
 
     Route::get('/trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
     Route::post('/trainer/notification', [TrainerNotificationController::class, 'update'])->name('trainer.notification.update');
+
 });

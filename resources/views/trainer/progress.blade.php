@@ -16,25 +16,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-t hover:bg-gray-50 transition">
-                        <td class="px-4 py-3 border font-medium text-gray-800">Budi</td>
-                        <td class="px-4 py-3 border text-green-600 font-semibold">12</td>
-                        <td class="px-4 py-3 border text-green-600 font-semibold">9</td>
-                        <td class="px-4 py-3 border text-gray-500">2 hari yang lalu</td>
-                    </tr>
-                    <tr class="border-t hover:bg-gray-50 transition">
-                        <td class="px-4 py-3 border font-medium text-gray-800">Sari</td>
-                        <td class="px-4 py-3 border text-green-600 font-semibold">15</td>
-                        <td class="px-4 py-3 border text-green-600 font-semibold">11</td>
-                        <td class="px-4 py-3 border text-gray-500">Kemarin</td>
-                    </tr>
-                    <tr class="border-t hover:bg-gray-50 transition">
-                        <td class="px-4 py-3 border font-medium text-gray-800">Tono</td>
-                        <td class="px-4 py-3 border text-green-600 font-semibold">8</td>
-                        <td class="px-4 py-3 border text-green-600 font-semibold">6</td>
-                        <td class="px-4 py-3 border text-gray-500">3 hari yang lalu</td>
-                    </tr>
-                </tbody>
+    @foreach($trainees as $trainee)
+        <tr class="border-t hover:bg-gray-50 transition">
+            <td class="px-4 py-3 border font-medium text-gray-800">{{ $trainee['name'] }}</td>
+            <td class="px-4 py-3 border text-green-600 font-semibold">{{ $trainee['mealplan_done'] }}</td>
+            <td class="px-4 py-3 border text-green-600 font-semibold">{{ $trainee['workout_done'] }}</td>
+            <td class="px-4 py-3 border text-gray-500">{{ $trainee['last_submit'] }}</td>
+        </tr>
+    @endforeach
+</tbody>
+
             </table>
         </div>
     </main>

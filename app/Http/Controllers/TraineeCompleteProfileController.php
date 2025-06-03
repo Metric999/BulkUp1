@@ -35,10 +35,10 @@ class TraineeCompleteProfileController extends Controller
     ]);
 
     if ($request->hasFile('photo')) {
-        $file = $request->file('photo');
-        $filename = time().'_'.$file->getClientOriginalName();
-        $path = $file->storeAs('uploads', $filename, 'public');
-        $validated['photo'] = $path;
+    $file = $request->file('photo');
+    $filename = time().'_'.$file->getClientOriginalName();
+    $path = $file->storeAs('uploads', $filename, 'public');
+    $validated['photo'] = $path; 
     }
 
     $validated['user_id'] = $user->id;

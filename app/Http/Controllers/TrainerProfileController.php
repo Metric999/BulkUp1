@@ -13,23 +13,23 @@ class TrainerProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $profile = $user->trainerProfile; // ambil dari relasi
+        $profile = $user->trainerProfile;
 
         $age = $profile && $profile->dob ? Carbon::parse($profile->dob)->age : null;
 
         return view('trainer.profile', [
-            'trainerName' => $profile->name,
+            'trainerName' => $profile->name ?? $user->name,
             'gender'      => $profile->gender ?? '-',
             'dob'         => $age ?? '-',
             'height'      => $profile->height ?? '-',
             'weight'      => $profile->weight ?? '-',
-            'email'       => $user->email,
+            'email'       => $user->email, // Tidak bisa diubah
             'about'       => $profile->about ?? '-',
             'photo'       => $profile->photo ?? 'uploads/default.png',
         ]);
     }
 
-    // Form untuk melengkapi profil
+    // Form untuk melengkapi profil trainer
     public function showCompleteProfileForm()
     {
         $user = Auth::user();
@@ -67,11 +67,9 @@ class TrainerProfileController extends Controller
             $photoPath = $profile->photo ?? 'uploads/default.png';
         }
 
-        // Update nama di user
-        $user->update(['name' => $validated['name']]);
-
-        // Update profil trainer
+        // Simpan data ke trainer_profiles (bukan ke tabel users)
         $profile->update([
+            'name'   => $validated['name'],
             'gender' => $validated['gender'],
             'dob'    => $validated['dob'],
             'height' => $validated['height'],

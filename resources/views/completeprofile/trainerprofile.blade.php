@@ -16,12 +16,9 @@
   <title>Complete Your Profile - BulkUp</title>
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Flowbite CSS and JS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
-  <style>
-    body { font-family: 'Poppins', sans-serif; }
-  </style>
+  <style> body { font-family: 'Poppins', sans-serif; } </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center">
 
@@ -33,41 +30,42 @@
   <!-- Main Container -->
   <div class="mt-28 w-4/5 max-w-5xl bg-white rounded-xl shadow-lg flex flex-col md:flex-row p-10 gap-10">
 
-    <!-- Left Side -->
-    <div class="flex-1 text-center text-black">
-      <label for="photo" class="cursor-pointer block">
-        <img 
-          src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('uploads/default.png') }}" 
-          id="profile-pic" 
-          alt="Profile Picture"
-          class="w-36 h-36 rounded-full object-cover border-4 border-gray-300 mx-auto mb-4"
-        >
-        <div class="text-sm text-gray-700">Click to change photo</div>
-      </label>
-      <input type="file" id="photo" name="photo" accept="image/*" class="hidden" onchange="previewImage(event)">
-      @error('photo')
-        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-      @enderror
-    </div>
-
     <!-- Right Side -->
     <div class="flex-grow w-full">
       <h2 class="text-center text-2xl font-semibold mb-6 text-gray-900">Complete Your Profile</h2>
+
       <form method="POST" action="{{ route('trainer.profile.complete.store') }}" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
-        <div>
-          <label for="name" class="block font-semibold mb-1 text-gray-900">Name</label>
-          <input 
-            type="text" id="name" name="name" placeholder="Enter name" required
-            value="{{ old('name', Auth::user()->name) }}"
-            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-          >
-          @error('name')
+        <!-- Foto Profil -->
+        <div class="text-center text-black">
+          <label for="photo" class="cursor-pointer block">
+            <img 
+              src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('uploads/default.png') }}" 
+              id="profile-pic" 
+              alt="Profile Picture"
+              class="w-36 h-36 rounded-full object-cover border-4 border-gray-300 mx-auto mb-4"
+            >
+            <div class="text-sm text-gray-700">Click to change photo</div>
+          </label>
+          <input type="file" id="photo" name="photo" accept="image/*" class="hidden" onchange="previewImage(event)">
+          @error('photo')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
           @enderror
         </div>
 
+        <!-- Name -->
+        <div>
+          <label for="name" class="block font-semibold mb-1 text-gray-900">Name</label>
+          <input 
+            type="text" id="name" name="name" required
+            value="{{ old('name', Auth::user()->name) }}"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          >
+          @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <!-- Gender -->
         <div>
           <label for="gender" class="block font-semibold mb-1 text-gray-900">Gender</label>
           <select 
@@ -77,11 +75,10 @@
             <option value="Male" {{ old('gender', Auth::user()->gender) == 'Male' ? 'selected' : '' }}>Male</option>
             <option value="Female" {{ old('gender', Auth::user()->gender) == 'Female' ? 'selected' : '' }}>Female</option>
           </select>
-          @error('gender')
-            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-          @enderror
+          @error('gender') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
+        <!-- DOB -->
         <div>
           <label for="dob" class="block font-semibold mb-1 text-gray-900">Date of Birth</label>
           <input 
@@ -89,44 +86,39 @@
             value="{{ old('dob', Auth::user()->dob ? Auth::user()->dob->format('Y-m-d') : '') }}"
             class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           >
-          @error('dob')
-            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-          @enderror
+          @error('dob') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
+        <!-- Height -->
         <div>
           <label for="height" class="block font-semibold mb-1 text-gray-900">Height (cm)</label>
           <input 
-            type="number" id="height" name="height" placeholder="Enter height" required
+            type="number" id="height" name="height" required
             value="{{ old('height', Auth::user()->height) }}"
             class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           >
-          @error('height')
-            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-          @enderror
+          @error('height') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
+        <!-- Weight -->
         <div>
           <label for="weight" class="block font-semibold mb-1 text-gray-900">Weight (kg)</label>
           <input 
-            type="number" id="weight" name="weight" placeholder="Enter weight" required
+            type="number" id="weight" name="weight" required
             value="{{ old('weight', Auth::user()->weight) }}"
             class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           >
-          @error('weight')
-            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-          @enderror
+          @error('weight') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
+        <!-- About -->
         <div>
           <label for="about" class="block font-semibold mb-1 text-gray-900">About Me</label>
           <textarea 
-            id="about" name="about" rows="3" placeholder="Tell us about yourself"
+            id="about" name="about" rows="3"
             class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           >{{ old('about', Auth::user()->about) }}</textarea>
-          @error('about')
-            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-          @enderror
+          @error('about') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 
         <button 
@@ -143,8 +135,7 @@
     function previewImage(event) {
       var reader = new FileReader();
       reader.onload = function () {
-        var output = document.getElementById('profile-pic');
-        output.src = reader.result;
+        document.getElementById('profile-pic').src = reader.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }

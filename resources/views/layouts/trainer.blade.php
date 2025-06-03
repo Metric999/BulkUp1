@@ -17,6 +17,7 @@
       menu.classList.toggle('hidden');
     }
   </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-pO8znkRUQw2v/ZqmhGxw4rqQ4x7OtvK0I6B1MJrrYJG74OJmuXYtbqBoBfZlf2XApHKJVaOeCZnPUBlEEnuHGA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-100 text-gray-900 min-h-screen">
 

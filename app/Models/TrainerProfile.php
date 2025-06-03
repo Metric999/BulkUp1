@@ -21,4 +21,9 @@ class TrainerProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function trainees()
+    {
+    return $this->hasMany(TraineeProfile::class, 'trainer_id', 'id'); // trainer_profiles.id
+    }
 }

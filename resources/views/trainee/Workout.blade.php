@@ -7,7 +7,7 @@
 
     @forelse($workouts as $day => $dayWorkouts)
         <div class="bg-white rounded-lg shadow p-4 sm:p-6">
-            <h3 class="text-lg sm:text-xl font-semibold">{{ $day }}</h3>
+            <h3 class="text-lg sm:text-xl font-semibold capitalize">{{ $day }}</h3>
 
             @foreach($dayWorkouts as $w)
                 <div class="mt-4 border-t pt-2 space-y-1">
@@ -18,16 +18,40 @@
 
                     @if(!empty($w->videoUrl))
                         <div class="aspect-video mt-2">
-                            <iframe class="w-full h-full rounded"
-                                    src="{{ str_contains($w->videoUrl, 'youtube') ? str_replace('watch?v=', 'embed/', $w->videoUrl) : $w->videoUrl }}"
-                                    frameborder="0" allowfullscreen></iframe>
+                            @php
+                                $videoUrl = $w->videoUrl;
+                                $embedUrl = '';
+
+                                if (str_contains($videoUrl, 'youtube.com/watch?v=')) {
+                                    $embedUrl = str_replace('watch?v=', 'embed/', $videoUrl);
+                                } elseif (str_contains($videoUrl, 'youtu.be/')) {
+                                    $videoId = substr(parse_url($videoUrl, PHP_URL_PATH), 1);
+                                    $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                                } elseif (str_contains($videoUrl, 'vimeo.com')) {
+                                    $videoId = preg_replace('/[^0-9]/', '', $videoUrl);
+                                    $embedUrl = 'https://player.vimeo.com/video/' . $videoId;
+                                } elseif (preg_match('/\.(mp4|webm|ogg)$/i', $videoUrl)) {
+                                    $embedUrl = null; // native video
+                                } else {
+                                    $embedUrl = $videoUrl; // fallback embed
+                                }
+                            @endphp
+
+                            @if($embedUrl)
+                                <iframe class="w-full h-full rounded" src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                            @else
+                                <video class="w-full h-full rounded" controls>
+                                    <source src="{{ $videoUrl }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            @endif
                         </div>
                     @endif
                 </div>
             @endforeach
         </div>
     @empty
-        <p class="text-gray-500">You have no workouts scheduled.</p>
+        <p class="text-gray-500">You have no workouts scheduled by your trainer.</p>
     @endforelse
 </div>
 @endsection
