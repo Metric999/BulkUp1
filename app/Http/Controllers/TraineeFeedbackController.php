@@ -3,30 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Feedback;
+use Illuminate\Support\Facades\Auth;
 
 class TraineeFeedbackController extends Controller
 {
-    // Menampilkan form feedback
-    public function showForm()
+    public function submit(Request $request)
     {
-        return view('trainee.feedback_form');
+        $request->validate([
+            'feedback' => 'required|string|max:1000',
+        ]);
+
+        Feedback::create([
+            'trainee_id' => Auth::id(),
+            'comment' => $request->input('feedback'),
+            'date' => now()->toDateString(),
+        ]);
+
+        return redirect()->back()->with('success', 'Feedback submitted successfully!');
     }
-
-    // Menangani submit feedback
-    public function submitForm(Request $request)
-    {
-        $feedback = trim($request->input('feedback'));
-
-        if (!empty($feedback)) {
-            // Simpan ke file di storage/app/feedbacks.txt
-            Storage::append('feedbacks.txt', $feedback);
-
-            // Redirect balik dengan pesan sukses
-            return redirect()->route('trainee.feedback')->with('success', 'Thank you for your feedback!');
-        } else {
-            // Redirect balik dengan error
-            return redirect()->route('trainee.feedback')->with('error', 'Please write something before submitting.');
-        }
-    }
+    public function index()
+{
+    return view('trainee.feedback'); // pastikan view ini ada di /resources/views/trainee/feedback.blade.php
+}
 }

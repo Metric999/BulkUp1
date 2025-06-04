@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Feedback;
 
 class TrainerFeedbackController extends Controller
 {
     public function index()
     {
-        return view('trainer.feedback');
+        $feedbackList = Feedback::with('trainee')->orderBy('date', 'desc')->get();
+        return view('trainer.feedback', compact('feedbackList'));
     }
 }

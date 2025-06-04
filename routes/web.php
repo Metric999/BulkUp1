@@ -22,6 +22,9 @@ use App\Http\Controllers\TrainerRegistController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TraineeRegistController;
 use App\Http\Middleware\CheckProfileComplete;
+use App\Http\Middleware\IsTrainer;
+use App\Http\Middleware\IsTrainee;
+
 
 // ------------------------
 // Public Routes
@@ -68,11 +71,13 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainee/profile/edit', [TraineeProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/trainee/profile/update', [TraineeProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('/trainee/notification', [TraineeNotificationController::class, 'index'])->name('trainee.notification');
-    Route::post('/trainee/notification', [TraineeNotificationController::class, 'store'])->name('trainee.notification.store');
+    Route::middleware(['auth', IsTrainee::class])->group(function () {
+        Route::get('/trainee/notification', [TraineeNotificationController::class, 'index'])->name('trainee.notification');
+    });
+    
 
-    Route::get('/trainee/feedback', [TraineeFeedbackController::class, 'showForm'])->name('trainee.feedback');
-    Route::post('/trainee/feedback', [TraineeFeedbackController::class, 'submitForm'])->name('trainee.feedback.submit');
+    Route::post('/trainee/feedback', [TraineeFeedbackController::class, 'submit'])->name('trainee.feedback.submit');
+    Route::get('/trainee/feedback', [TraineeFeedbackController::class, 'index'])->name('trainee.feedback');
 
     // --- Trainer Routes ---
     Route::get('/trainer/home', [TrainerHomeController::class, 'index'])->name('trainer.home');
@@ -95,7 +100,11 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
 
-    Route::get('/trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
-    Route::post('/trainer/notification', [TrainerNotificationController::class, 'update'])->name('trainer.notification.update');
+    Route::middleware(['auth', IsTrainer::class])->group(function () {
+        Route::get('/trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification'); // ← ini route yang dimaksud
+        Route::get('/trainer/notification/create', [TrainerNotificationController::class, 'create'])->name('trainer.notification.create');
+        Route::post('/trainer/notification', [TrainerNotificationController::class, 'store'])->name('trainer.notification.store');
+    });
 
 });
+

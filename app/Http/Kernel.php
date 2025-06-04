@@ -25,5 +25,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'check.profile.complete' => \App\Http\Middleware\CheckProfileComplete::class,
+        'trainer' => \App\Http\Middleware\IsTrainer::class,
     ];
 }

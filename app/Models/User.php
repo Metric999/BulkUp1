@@ -50,6 +50,11 @@ class User extends Authenticatable
     {
     return $this->hasMany(User::class, 'trainer_id');
     }
+    public function notificationSetting()
+    {
+    return $this->hasOne(TrainerNotification::class);
+    }
+
 
 }
 
