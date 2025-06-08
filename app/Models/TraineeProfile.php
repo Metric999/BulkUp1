@@ -30,5 +30,20 @@ class TraineeProfile extends Model
     {
         return $this->belongsTo(User::class, 'trainer_id');
     }
+
+    public function workouts()
+    {
+    return $this->hasMany(Workout::class, 'trainee_id');
+    }
+
+    public function mealplans()
+    {
+    return $this->hasMany(mealplan::class, 'trainee_id');
+    }
+
+    public function progressSubmissions()
+    {
+    return $this->hasMany(ProgressSubmission::class, 'trainee_id');
+    }
 }
 

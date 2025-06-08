@@ -11,38 +11,32 @@ use Carbon\Carbon;
 class TrainerProgressController extends Controller
 {
     public function index()
-    {
-        $trainerId = Auth::id();
+{
+    $trainerId = auth()->user()->id;
 
-        // Ambil trainee yang memilih trainer ini
-        $trainees = TraineeProfile::where('trainer_id', $trainerId)->get();
+    $trainees = TraineeProfile::with(['user', 'mealPlans', 'progressSubmissions'])
+        ->where('trainer_id', $trainerId)
+        ->get();
 
-        $progress = $trainees->map(function ($trainee) {
-            $mealplanCount = MealPlan::where('trainer_id', $trainee->trainer_id)
-                                    ->where('trainee_id', $trainee->user_id)
-                                    ->count();
+    $data = $trainees->map(function ($trainee) {
+        $mealplanDone = $trainee->mealPlans->count();
 
-            $workoutCount = Workout::where('trainer_id', $trainee->trainer_id)
-                                    ->where('trainee_id', $trainee->user_id)
-                                    ->count();
+        $workoutDone = $trainee->progressSubmissions
+            ->whereNotNull('workout_id')
+            ->unique('workout_id')
+            ->count();
 
-            // Ambil tanggal terakhir submit (pakai updated_at dari workout/mealplan)
-            $lastWorkout = Workout::where('trainee_id', $trainee->user_id)->latest('updated_at')->first();
-            $lastMealplan = MealPlan::where('trainee_id', $trainee->user_id)->latest('updated_at')->first();
+        $lastSubmit = optional($trainee->progressSubmissions->sortByDesc('created_at')->first())->created_at;
 
-            $lastSubmit = collect([$lastWorkout?->updated_at, $lastMealplan?->updated_at])
-                ->filter()
-                ->sortDesc()
-                ->first();
+        return [
+            'name' => $trainee->user->username ?? 'Trainee',
+            'mealplan_done' => $mealplanDone,
+            'workout_done' => $workoutDone,
+            'last_submit' => $lastSubmit ? $lastSubmit->format('d M Y H:i') : '-',
+        ];
+    });
 
-            return [
-                'name' => $trainee->name,
-                'mealplan_done' => $mealplanCount,
-                'workout_done' => $workoutCount,
-                'last_submit' => $lastSubmit ? Carbon::parse($lastSubmit)->diffForHumans() : 'Belum ada',
-            ];
-        });
-
-        return view('trainer.progress', ['trainees' => $progress]);
+    return view('trainer.progress', ['trainees' => $data]);
     }
+
 }

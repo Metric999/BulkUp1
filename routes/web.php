@@ -20,6 +20,7 @@ use App\Http\Controllers\TraineeProfileController;
 use App\Http\Controllers\InviteTrainerController;
 use App\Http\Controllers\TrainerRegistController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProgressSubmissionController;
 use App\Http\Controllers\TraineeRegistController;
 use App\Http\Middleware\CheckProfileComplete;
 use App\Http\Middleware\IsTrainer;
@@ -65,6 +66,8 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
     Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('trainee.mealplan');
+    Route::get('/trainee/mealplan/submit/{meal}', [TraineeMealPlanController::class, 'submit'])->name('trainee.mealplan.submit');
+
 
     Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('trainee.profile');
     Route::post('/trainee/profile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainee.profile.save');
@@ -97,6 +100,8 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name('trainer.profile');
     Route::post('/trainer/profile/save', [TrainerProfileController::class, 'saveCompleteProfile'])->name('trainer.profile.save');
     Route::get('/trainer/profile/edit', [TrainerProfileController::class, 'edit'])->name('trainer.profile.edit');
+    Route::post('/progress/submit', [ProgressSubmissionController::class, 'store'])->name('progress.submit');
+
 
     Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
 

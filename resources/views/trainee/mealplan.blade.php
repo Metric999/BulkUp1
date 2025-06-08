@@ -16,10 +16,6 @@
       @foreach ($meals as $meal)
         @php
           $isSubmitted = in_array($meal->id, $submitted);
-          $btnColor = $isSubmitted ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600';
-          $label = $isSubmitted ? '✅ Submitted' : 'Submit';
-          $submitUrl = route('trainee.mealplan', ['submitted' => implode(',', $submitted), 'toggle' => $meal->id]);
-
           $colorMap = [
               'breakfast' => 'yellow',
               'lunch' => 'blue',
@@ -36,9 +32,17 @@
           <p class="mt-2">Meal : {{ $meal->meal_name }}</p>
           <p>Calories : {{ $meal->calories }} kcal</p>
           <p class="italic text-sm">Note : {{ $meal->note }}</p>
-          <a href="{{ $submitUrl }}" class="inline-block mt-4 {{ $btnColor }} text-white px-4 py-2 rounded-full text-sm transition-all">
-            {{ $label }}
-          </a>
+
+          @if (!$isSubmitted)
+              <a href="{{ route('trainee.mealplan', ['toggle' => $meal->id, 'submitted' => implode(',', $submitted)]) }}"
+              class="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm transition-all">
+              Submit
+            </a>
+          @else
+            <span class="inline-block mt-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm">
+              ✅ Submitted
+            </span>
+          @endif
         </div>
       @endforeach
     </div>
