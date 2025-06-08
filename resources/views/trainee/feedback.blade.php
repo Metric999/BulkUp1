@@ -3,29 +3,51 @@
 @section('title', 'BulkUp - Feedback')
 
 @section('content')
-<main class="flex justify-center items-center py-16 px-4 bg-gray-100 min-h-screen">
-  <div class="w-full max-w-2xl bg-white p-8 rounded-xl border-2 border-black shadow-lg">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Give Feedback</h2>
+<main class="flex justify-center items-center py-16 px-4 bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen">
+  <div class="w-full max-w-2xl bg-white p-10 rounded-2xl border border-gray-300 shadow-xl relative overflow-hidden">
+
+    <!-- Ilustrasi di pojok -->
+   <div class="flex flex-col items-center mb-4">
+
+  <h2 class="text-3xl font-bold text-gray-800">💬 Give Us Your Feedback</h2>
+</div>
+
+
+    <!-- Motivational Quote -->
+    <div class="bg-purple-100 text-purple-800 px-4 py-3 rounded-lg mb-6 text-sm text-center">
+      We value your thoughts! Help us make <strong>BulkUp</strong> even better 💪
+    </div>
 
     @if (session('success'))
-      <div class="bg-green-500 text-white px-4 py-2 rounded mb-4">{{ session('success') }}</div>
+      <div class="bg-green-100 text-green-800 border border-green-300 px-4 py-3 rounded mb-4">
+        {{ session('success') }}
+      </div>
     @elseif (session('error'))
-      <div class="bg-red-500 text-white px-4 py-2 rounded mb-4">{{ session('error') }}</div>
+      <div class="bg-red-100 text-red-800 border border-red-300 px-4 py-3 rounded mb-4">
+        {{ session('error') }}
+      </div>
     @endif
 
-    <form method="POST" action="{{ route('trainee.feedback.submit') }}">
+    <form method="POST" action="{{ route('trainee.feedback.submit') }}" class="space-y-4">
       @csrf
       <textarea 
         name="feedback" 
-        placeholder="Write feedback..." 
-        class="w-full h-40 p-4 border border-gray-300 rounded-md text-gray-800 bg-gray-100 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+        placeholder="What do you love about BulkUp? What could be improved? Be honest, we appreciate it! 💡" 
+        class="w-full h-44 p-4 border-2 border-gray-300 rounded-lg text-gray-700 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-200 shadow-sm"></textarea>
       
-      <button 
-        type="submit" 
-        class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-200">
-        Submit Feedback
-      </button>
+      <div class="flex justify-center">
+        <button 
+          type="submit" 
+          class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full transition duration-300 shadow-md hover:shadow-lg">
+          🚀 Submit Feedback
+        </button>
+      </div>
     </form>
+
+    <!-- Optional: fake testimonial or info -->
+    <div class="mt-8 border-t pt-6 text-center text-sm text-gray-500">
+      “Your feedback helps us lift better every day.” — The BulkUp Team 🏋️‍♂️
+    </div>
   </div>
 </main>
 @endsection

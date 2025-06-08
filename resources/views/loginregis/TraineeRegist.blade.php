@@ -1,45 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
   <title>Register - BulkUp</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1F2937;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3B82F6;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      box-shadow: 0 0 14px #3B82F6;
+      transition: box-shadow 0.3s ease;
+    }
+  </style>
 </head>
-<body class="flex flex-col md:flex-row h-screen font-[Poppins]">
+
+<body class="flex flex-col md:flex-row h-screen">
 
   <!-- Left Side -->
-  <div class="w-full md:w-1/2 bg-[#1f2937] text-white flex flex-col justify-center px-6 sm:px-10 py-10">
-    <h1 class="text-3xl sm:text-4xl font-bold mb-4">Welcome to BulkUp</h1>
-    <p class="text-base sm:text-xl">Ready to build your dream body? Join now and start your bulking journey with BulkUp!</p>
+  <div class="w-full md:w-1/2 bg-gradient-to-br from-[#111827] to-[#1E293B] text-white flex flex-col justify-center px-10 py-16">
+    <h1 class="text-4xl font-extrabold mb-5 leading-snug">
+      Welcome to <span class="text-blue-500">BulkUp</span>
+    </h1>
+    <p class="text-lg max-w-md leading-relaxed mb-10">
+      Ready to build your dream body? Join now and start your <span class="font-semibold text-blue-400">bulking journey</span> with BulkUp!
+    </p>
   </div>
 
-  <!-- Right Side -->
-<div class="w-full md:w-1/2 bg-gray-400 flex flex-col justify-center items-center px-6 sm:px-10 py-10">
-  <h2 class="text-white text-2xl sm:text-3xl font-bold mb-6">REGISTER AS TRAINEE</h2>
+  <!-- Right Side Register Form -->
+  <div class="w-full md:w-1/2 bg-[#1F2937] flex justify-center items-center px-10 py-16">
+    <div class="w-full max-w-md bg-[#111827] rounded-lg p-10 shadow-lg">
 
-  @if ($errors->any())
-    <div class="bg-red-200 text-red-800 px-4 py-2 rounded mb-4 w-full max-w-md">
-      <ul class="list-disc pl-4">
-        @foreach ($errors->all() as $error)
+      <h2 class="text-white text-3xl font-bold mb-10 text-center tracking-wide">REGISTER AS TRAINEE</h2>
+
+      @if ($errors->any())
+      <div class="bg-red-600 text-red-100 px-4 py-3 rounded mb-6">
+        <ul class="list-disc pl-5">
+          @foreach ($errors->all() as $error)
           <li>{{ $error }}</li>
-        @endforeach
-      </ul>
+          @endforeach
+        </ul>
+      </div>
+      @endif
+
+      <form method="POST" action="{{ route('trainee.register.submit') }}" class="space-y-6">
+        @csrf
+
+        <label class="relative block">
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter Username"
+            required
+            class="w-full rounded-md bg-gray-700 text-white px-4 py-3 placeholder-gray-400 focus:ring-0 focus:border-blue-500" />
+        </label>
+
+        <label class="relative block">
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            required
+            class="w-full rounded-md bg-gray-700 text-white px-4 py-3 placeholder-gray-400 focus:ring-0 focus:border-blue-500" />
+        </label>
+
+        <label class="relative block">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            required
+            class="w-full rounded-md bg-gray-700 text-white px-4 py-3 placeholder-gray-400 focus:ring-0 focus:border-blue-500" />
+        </label>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition shadow-md">
+          REGISTER
+        </button>
+      </form>
+
     </div>
-  @endif
-
-  <form class="w-full max-w-md flex flex-col" method="POST" action="{{ route('trainee.register.submit') }}">
-    @csrf
-    <input type="text" name="username" placeholder="Enter Username" class="mb-4 px-4 py-2 rounded" required>
-    <input type="password" name="password" placeholder="Enter Password" class="mb-4 px-4 py-2 rounded" required>
-    <input type="email" name="email" placeholder="Enter Email" class="mb-4 px-4 py-2 rounded" required>
-    <button type="submit" class="bg-white text-black px-6 py-2 rounded font-semibold hover:bg-indigo-500 transition">
-      REGISTER
-    </button>
-  </form>
-</div>
-
+  </div>
 
 </body>
+
 </html>

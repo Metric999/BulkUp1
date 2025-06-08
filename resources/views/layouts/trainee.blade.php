@@ -87,13 +87,18 @@
       <span>Feedback</span>
     </a>
 
+  
     <!-- Logout -->
-    <a href="#" class="flex items-center space-x-2 text-white hover:text-red-400">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-      </svg>
-      <span>Log Out</span>
-    </a>
+<form method="POST" action="{{ route('logout') }}">
+  @csrf
+  <button type="submit" class="flex items-center space-x-2 text-white hover:text-red-400 w-full text-left">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+    </svg>
+    <span>Log Out</span>
+  </button>
+</form>
+
   </div>
 </div>
   </nav>
@@ -107,7 +112,11 @@
   <a href="{{ route('trainee.profile') }}" class="block text-white hover:text-blue-400">Profile</a>
   <a href="{{ route('trainee.notification') }}" class="block text-white hover:text-blue-400">Notification</a>
   <a href="{{ route('trainee.feedback') }}" class="block text-white hover:text-blue-400">Feedback</a>
-  <a href="#" class="block text-white hover:text-red-400">Log Out</a>
+ <form method="POST" action="{{ route('logout') }}">
+  @csrf
+  <button type="submit" class="block text-white hover:text-red-400 w-full text-left">Log Out</button>
+</form>
+
 </div>
 
 <!-- Main Content -->

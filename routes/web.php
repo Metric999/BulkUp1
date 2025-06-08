@@ -20,18 +20,30 @@ use App\Http\Controllers\TraineeProfileController;
 use App\Http\Controllers\InviteTrainerController;
 use App\Http\Controllers\TrainerRegistController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProgressSubmissionController;
 use App\Http\Controllers\TraineeRegistController;
 use App\Http\Middleware\CheckProfileComplete;
 use App\Http\Middleware\IsTrainer;
 use App\Http\Middleware\IsTrainee;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/');
+})->name('logout');
 
 
 // ------------------------
 // Public Routes
 // ------------------------
 
+
+
+
 Route::get('/', [landingpageController::class, 'index']);
+
 Route::get('/contact', [landingpageController::class, 'contact']);
 
 Route::get('/loginregis/invite', [InviteTrainerController::class, 'showForm'])->name('trainer.invite.show');
@@ -66,8 +78,6 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
     Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('trainee.mealplan');
-    Route::get('/trainee/mealplan/submit/{meal}', [TraineeMealPlanController::class, 'submit'])->name('trainee.mealplan.submit');
-
 
     Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('trainee.profile');
     Route::post('/trainee/profile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainee.profile.save');
@@ -100,8 +110,6 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainer/profile', [TrainerProfileController::class, 'show'])->name('trainer.profile');
     Route::post('/trainer/profile/save', [TrainerProfileController::class, 'saveCompleteProfile'])->name('trainer.profile.save');
     Route::get('/trainer/profile/edit', [TrainerProfileController::class, 'edit'])->name('trainer.profile.edit');
-    Route::post('/progress/submit', [ProgressSubmissionController::class, 'store'])->name('progress.submit');
-
 
     Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
 
