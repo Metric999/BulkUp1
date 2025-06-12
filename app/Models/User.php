@@ -54,6 +54,11 @@ class User extends Authenticatable
     {
     return $this->hasOne(TrainerNotification::class);
     }
+    public function mealPlans()
+{
+    return $this->hasMany(MealPlan::class, 'trainee_id');
+}
+
 
 
 }

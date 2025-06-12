@@ -7,8 +7,7 @@
 
     @forelse($workouts as $day => $dayWorkouts)
         <div class="bg-white rounded-lg shadow p-4 sm:p-6">
-            <h3 class="text-lg sm:text-xl font-semibold capitalize">{{ $day }}</h3>
-            <h3 class="text-lg sm:text-xl font-semibold">{{ \Carbon\Carbon::parse($day)->format('l, d M, Y') }}</h3>
+            <h3 class="text-lg sm:text-xl font-semibold">{{ \Carbon\Carbon::parse($day)->format('l, d M, Y,') }}</h3>
             @foreach($dayWorkouts as $w)
                 <div class="mt-4 border-t pt-2 space-y-1">
                     <p class="font-semibold text-base sm:text-lg">{{ $w->name }}</p>

@@ -1,7 +1,7 @@
 @extends('layouts.trainee')
 
 @section('content')
-<<div class="bg-gray-100 min-h-screen py-8 px-4 sm:px-6">
+<div class="bg-gray-100 min-h-screen py-8 px-4 sm:px-6">
   <div class="w-full max-w-md mx-auto bg-white p-5 sm:p-6 rounded-2xl shadow-xl overflow-hidden">
     <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
       <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Trainee Profile</h2>
@@ -62,7 +62,7 @@
         @method('PUT')
 
         <div class="space-y-4">
-          <input type="text" name="name" value="{{ old('name', $user->name) }}" required
+          <input type="text" name="name" value="{{ $profile->name ?? $user->name }}" required
                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                  placeholder="Name" />
 

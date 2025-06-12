@@ -60,44 +60,32 @@ class TrainerWorkoutController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'category' => 'required|string|max:100',
-            'difficulty' => 'required|string|max:50',
-            'reps' => 'required|string|max:50',
-            'video_url' => 'nullable|url',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string',
+        'category' => 'required|string',
+        'difficulty' => 'required|string',
+        'reps' => 'required|string',
+        'video_url' => 'nullable|url',
+    ]);
 
-        $workout = Workout::findOrFail($id);
+    $workout = Workout::findOrFail($id);
+    $workout->update([
+        'name' => $request->name,
+        'kategori' => $request->category,
+        'difficult' => $request->difficulty,
+        'reps' => $request->reps,
+        'videoUrl' => $request->video_url,
+    ]);
 
-        // Cek otorisasi
-        if ($workout->trainer_id !== Auth::id()) {
-            abort(403);
-        }
+    return back()->with('success', 'Workout updated successfully.');
+}
 
-        $workout->update([
-            'name' => $request->name,
-            'kategori' => $request->category,
-            'difficult' => $request->difficulty,
-            'reps' => $request->reps,
-            'videoUrl' => $request->video_url,
-        ]);
+public function destroy($id)
+{
+    $workout = Workout::findOrFail($id);
+    $workout->delete();
 
-        return redirect()->back()->with('success', 'Workout updated successfully.');
-    }
-
-    public function destroy($id)
-    {
-        $workout = Workout::findOrFail($id);
-
-        // Cek otorisasi
-        if ($workout->trainer_id !== Auth::id()) {
-            abort(403);
-        }
-
-        $workout->delete();
-
-        return redirect()->back()->with('success', 'Workout deleted successfully.');
-    }
+    return back()->with('success', 'Workout deleted successfully.');
+}
 }

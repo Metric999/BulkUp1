@@ -99,10 +99,14 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::post('/trainer/workout', [TrainerWorkoutController::class, 'store'])->name('trainer.workout.store');
     Route::put('/trainer/workout/{id}', [TrainerWorkoutController::class, 'update'])->name('trainer.workout.update');
     Route::delete('/trainer/workout/{id}', [TrainerWorkoutController::class, 'destroy'])->name('trainer.workout.destroy');
+
     
-    Route::get('/trainer/mealplan', [TrainerMealplanController::class, 'index'])->name('trainer.mealplan');
-    Route::post('/trainer/mealplan', [TrainerMealplanController::class, 'store'])->name('trainer.mealplan.store');
-    Route::post('/trainee/mealplan/submit/{id}', [TrainerMealPlanController::class, 'submitMeal'])->name('trainee.mealplan.submit');
+    Route::prefix('trainer/mealplan')->middleware('auth')->group(function () {
+        Route::get('/', [TrainerMealPlanController::class, 'index'])->name('trainer.mealplan');
+        Route::post('/', [TrainerMealPlanController::class, 'store'])->name('trainer.mealplan.store');
+        Route::put('/{meal}', [TrainerMealPlanController::class, 'update'])->name('trainer.mealplan.update');
+        Route::delete('/{meal}', [TrainerMealPlanController::class, 'destroy'])->name('trainer.mealplan.destroy');
+    });
 
 
     Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
