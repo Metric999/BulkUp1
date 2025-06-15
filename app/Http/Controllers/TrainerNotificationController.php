@@ -5,15 +5,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
+
 
 class TrainerNotificationController extends Controller
 {
     public function index()
-    {
-    $notifications = Notification::orderBy('tanggal', 'desc')->get();
-    return view('trainer.notification', compact('notifications'));
-    }
+{
+    $notifications = Notification::with('trainee')
+        ->whereHas('trainee.traineeProfile', function ($query) {
+            $query->where('trainer_id', Auth::id());
+        })
+        ->orderBy('tanggal', 'desc')
+        ->get();
 
+    return view('trainer.notification', compact('notifications'));
+}
     public function create()
     {
         return view('trainer.notification.create');
@@ -27,10 +34,12 @@ class TrainerNotificationController extends Controller
         ]);
 
         Notification::create([
-            'judul'   => $request->judul,
-            'pesan'   => $request->pesan,
+            'judul' => $request->judul,
+            'pesan' => $request->pesan,
             'tanggal' => now(),
+            'trainee_id' => $request->trainee_id, // ✅ Gunakan dari form
         ]);
+        
 
         return redirect()->back()->with('success', 'Notifikasi berhasil ditambahkan!');
     }

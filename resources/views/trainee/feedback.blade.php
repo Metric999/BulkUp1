@@ -3,7 +3,7 @@
 @section('title', 'BulkUp - Feedback')
 
 @section('content')
-<main class="flex justify-center items-center py-16 px-4 bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen">
+<main class="flex justify-center items-center py-16 px-4  min-h-screen">
   <div class="w-full max-w-2xl bg-white p-10 rounded-2xl border border-gray-300 shadow-xl relative overflow-hidden">
 
     <!-- Ilustrasi di pojok -->

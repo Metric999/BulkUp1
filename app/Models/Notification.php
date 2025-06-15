@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     protected $fillable = ['judul', 'pesan', 'tanggal'];
+    public function trainee()
+{
+    return $this->belongsTo(User::class, 'trainee_id');
+}
+
 }
