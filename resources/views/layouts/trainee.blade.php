@@ -88,16 +88,49 @@
     </a>
 
   
-    <!-- Logout -->
-<form method="POST" action="{{ route('logout') }}">
-  @csrf
-  <button type="submit" class="flex items-center space-x-2 text-white hover:text-red-400 w-full text-left">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-    </svg>
-    <span>Log Out</span>
-  </button>
-</form>
+
+
+<!-- Logout Button  -->
+<button type="button" onclick="openLogoutModal()" class="flex items-center space-x-2 text-white hover:text-red-400 w-full text-left">
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+  </svg>
+  <span>Log Out</span>
+</button>
+
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg w-80 p-6 text-center">
+    <h2 class="text-lg font-semibold mb-4">Yakin ingin logout?</h2>
+    <p class="text-sm text-gray-600 mb-6">Anda akan keluar dari sesi saat ini.</p>
+
+    <div class="flex justify-center space-x-4">
+      <!-- Cancel Button -->
+      <button onclick="closeLogoutModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+        Batal
+      </button>
+
+      <!-- Confirm Logout Form -->
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-red-600">
+          Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Tambahkan ini di bagian <script> -->
+<script>
+  function openLogoutModal() {
+    document.getElementById('logoutModal').classList.remove('hidden');
+  }
+
+  function closeLogoutModal() {
+    document.getElementById('logoutModal').classList.add('hidden');
+  }
+</script>
 
   </div>
 </div>
