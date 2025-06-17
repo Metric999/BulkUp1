@@ -19,3 +19,4 @@ class TrainerFeedbackController extends Controller
         return view('trainer.feedback', compact('feedbackList'));
     }
 }
+// Simpan ke database

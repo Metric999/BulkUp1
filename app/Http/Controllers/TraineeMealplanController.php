@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+// Simpan ke database
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MealPlan;

@@ -6,7 +6,7 @@ use App\Models\MealPlan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+// Simpan ke database
 class TrainerMealPlanController extends Controller
 {
     public function index()

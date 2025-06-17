@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-
+// Simpan ke database
 class TrainerProfileController extends Controller
 {
     // Tampilkan halaman profile trainer

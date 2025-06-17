@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-
+// Simpan ke database
 class TrainerRegistController extends Controller
 {
     // Tampilkan form registrasi trainer

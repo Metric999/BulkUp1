@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ProgressSubmissionController extends Controller
 {
     public function store(Request $request)
-    {
+    {// Simpan ke database
         $request->validate([
             'type' => 'required|in:workout,mealplan',
             'item_id' => 'required|integer'

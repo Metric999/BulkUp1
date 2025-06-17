@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+// Simpan ke database
 class InviteTrainerController extends Controller
 {
     // Menampilkan form invite

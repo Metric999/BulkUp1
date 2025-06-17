@@ -16,4 +16,4 @@ class Feedback extends Model
     {
         return $this->belongsTo(User::class, 'trainee_id');
     }
-}
+}// Simpan ke database

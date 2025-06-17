@@ -18,7 +18,7 @@ class LoginController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
             'role' => 'required|in:trainer,trainee',
-        ]);
+        ]);// Simpan ke database
 
         if (Auth::attempt([
             'username' => $credentials['username'],

@@ -8,7 +8,7 @@ use App\Models\TraineeProfile;
 use App\Models\User;
 
 class TraineeCompleteProfileController extends Controller
-{
+{// Simpan ke database
     public function show() 
     {
         $user = Auth::user();

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TrainerProfile;
-
+// Simpan ke database
 class TrainerCompleteProfileController extends Controller
 {
     public function showProfileForm()

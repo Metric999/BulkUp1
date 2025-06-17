@@ -7,7 +7,7 @@ use App\Models\Workout;
 use App\Models\MealPlan;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+// Simpan ke database
 class TrainerProgressController extends Controller
 {
     public function index()

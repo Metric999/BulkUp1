@@ -18,5 +18,5 @@ class MealPlan extends Model
     'meal_name',
     'calories',
     'note'
-];
+];// Simpan ke database
 }

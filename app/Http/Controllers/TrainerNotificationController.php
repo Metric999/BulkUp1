@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
-
+// Simpan ke database
 class TrainerNotificationController extends Controller
 {
     public function index()

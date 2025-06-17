@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+// Simpan ke database
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\Auth;
 
 class TraineeFeedbackController extends Controller
-{
+{// Simpan ke database
     public function submit(Request $request)
     {
         $request->validate([

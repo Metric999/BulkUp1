@@ -7,17 +7,22 @@ use Illuminate\Support\Facades\Schema;
 class CreateWeightLogsTable extends Migration
 {
     public function up()
-    {
-        Schema::create('weight_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->date('date');
-            $table->decimal('weight', 5, 2);
-            $table->timestamps();
+{
+    Schema::create('weight_logs', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('trainee_id');
+        $table->float('weight');
+        $table->float('height');
+        $table->integer('age');
+        $table->string('gender');
+        $table->float('bmi_result');
+        $table->string('bmi_category');
+        $table->timestamps();
 
-            $table->unique(['user_id', 'date']); // agar tidak double input untuk tanggal yang sama
-        });
-    }
+        $table->foreign('trainee_id')->references('id')->on('trainee_profiles')->onDelete('cascade');
+    });
+}
+
 
     public function down()
     {

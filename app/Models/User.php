@@ -31,7 +31,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+// Simpan ke database
     public function traineeProfile()
     {
     return $this->hasOne(TraineeProfile::class);

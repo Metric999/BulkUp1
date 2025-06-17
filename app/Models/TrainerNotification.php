@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+// Simpan ke database
 class TrainerNotification extends Model
 {
     protected $fillable = [

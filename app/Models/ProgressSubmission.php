@@ -14,3 +14,4 @@ class ProgressSubmission extends Model
     }
 }
 
+// Simpan ke database

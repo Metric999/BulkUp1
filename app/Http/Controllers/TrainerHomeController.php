@@ -8,7 +8,7 @@ use App\Models\TraineeProfile;
 use App\Models\Workout;
 use App\Models\MealPlan;
 use Illuminate\Support\Facades\Auth;
-
+// Simpan ke database
 class TrainerHomeController extends Controller
 {
     public function index()

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+// Simpan ke database
 class TraineeRegistController extends Controller
 {
     public function showForm()
