@@ -9,28 +9,28 @@ use Illuminate\Http\Request;
 class ProgressSubmissionController extends Controller
 {
     public function store(Request $request)
-    {// Simpan ke database
-        $request->validate([
-            'type' => 'required|in:workout,mealplan',
-            'item_id' => 'required|integer'
-        ]);
+{
+    $request->validate([
+        'type' => 'required|in:workout,mealplan',
+        'item_id' => 'required|integer'
+    ]);
 
-        $trainee = Auth::user()->traineeProfile;
+    // dd(Auth::user());
+    $trainee = Auth::user()->traineeProfile;
+    $data = [
+        'trainee_id' => $trainee->id, // ✅ gunakan id dari trainee_profiles
+        'submitted_at' => now(),
+    ];
 
-        $data = [
-            'trainee_id' => $trainee->id,
-            'submitted_at' => now(),
-        ];
+    if ($request->type === 'workout' ) {
+        $data['workout_id'] = $request->item_id;
+    } else {
+        $data['meal_id'] = $request->item_id; // pastikan ini sesuai nama kolom di tabel
+    }
 
-        if ($request->type === 'workout') {
-            $data['workout_id'] = $request->item_id;
-        } else {
-            $data['meal_plan_id'] = $request->item_id;
-        }
+    // ✅ Simpan ke DB
+    ProgressSubmission::create($data);
 
-        ProgressSubmission::create($data);
-
-        return redirect()->back()->with('success', 'Progress submitted!');
+    return redirect()->back()->with('success', 'Progress submitted!');
     }
 }
-

@@ -17,9 +17,9 @@ class CreateProgressSubmissionsTable extends Migration
             $table->timestamps();
 
             // Relasi foreign key
-            $table->foreign('trainee_id')->references('id')->on('trainee_profiles')->onDelete('cascade');
+            $table->foreign('trainee_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('workout_id')->references('id')->on('workouts')->onDelete('cascade');
-            $table->foreign('meal_id')->references('id')->on('meals')->onDelete('cascade');
+            $table->foreign('meal_id')->references('id')->on('meal_plans')->onDelete('cascade');
         });
     }
 
@@ -28,4 +28,3 @@ class CreateProgressSubmissionsTable extends Migration
         Schema::dropIfExists('progress_submissions');
     }
 }
-

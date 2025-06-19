@@ -34,6 +34,9 @@ Route::post('/logout', function (Request $request) {
     return redirect('/');
 })->name('logout');
 
+Route::get('/a', function () {
+    dd(Auth::user());
+});
 
 // ------------------------
 // Public Routes

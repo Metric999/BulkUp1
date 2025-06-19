@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\TraineeProfile;
 use Illuminate\Database\Eloquent\Model;
 
 class ProgressSubmission extends Model
@@ -12,6 +12,10 @@ class ProgressSubmission extends Model
     {
         return $this->belongsTo(TraineeProfile::class, 'trainee_id');
     }
+    public function traineeProfile()
+    {
+        return $this->hasOne(TraineeProfile::class, 'user_id');
+    }
+
 }
 
-// Simpan ke database

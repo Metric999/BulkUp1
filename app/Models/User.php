@@ -6,7 +6,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\TraineeProfile;
 use App\Models\TrainerProfile;
-
+use App\Models\Workout;
+use App\Models\MealPlan;
 
 class User extends Authenticatable
 {
@@ -34,7 +35,7 @@ class User extends Authenticatable
 // Simpan ke database
     public function traineeProfile()
     {
-    return $this->hasOne(TraineeProfile::class);
+    return $this->hasOne(TraineeProfile::class, 'user_id');
     }
     public function trainerProfile()
     {
@@ -57,6 +58,10 @@ class User extends Authenticatable
     public function mealPlans()
 {
     return $this->hasMany(MealPlan::class, 'trainee_id');
+}
+    public function workouts()
+{
+    return $this->hasMany(Workout::class, 'trainee_id');
 }
 
 

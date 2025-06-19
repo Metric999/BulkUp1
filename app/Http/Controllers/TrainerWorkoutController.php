@@ -6,29 +6,37 @@ use App\Models\Workout;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// Simpan ke database
+
 class TrainerWorkoutController extends Controller
 {
     public function index(Request $request)
-    {
-        $trainees = User::whereHas('traineeProfile', function ($q) {
-            $q->where('trainer_id', Auth::id());
-        })->get();
+{
+    $trainees = User::whereHas('traineeProfile', function ($q) {
+        $q->where('trainer_id', Auth::id());
+    })->get();
 
-        $selectedTrainee = null;
-        $workouts = [];
+    $selectedTraineeId = $request->input('trainee_id');
+    $selectedTrainee = null;
+    $workouts = [];
 
-        if ($request->trainee_id) {
-            $selectedTrainee = User::find($request->trainee_id);
-            if ($selectedTrainee) {
-                $workouts = Workout::where('trainee_id', $selectedTrainee->id)
-                    ->orderByDesc('date')
-                    ->get();
-            }
-        }
-
-        return view('trainer.workout', compact('trainees', 'selectedTrainee', 'workouts'));
+    // Default: jika trainee tidak dipilih dan hanya 1 trainee, pilih otomatis
+    if (!$selectedTraineeId && $trainees->count() === 1) {
+        $selectedTraineeId = $trainees->first()->id;
     }
+
+    if ($selectedTraineeId) {
+        $selectedTrainee = $trainees->where('id', $selectedTraineeId)->first();
+
+        if ($selectedTrainee) {
+            $workouts = Workout::where('trainee_id', $selectedTrainee->id)
+                ->orderByDesc('date')
+                ->get();
+        }
+    }
+
+    return view('trainer.workout', compact('trainees', 'selectedTrainee', 'workouts'));
+}
+
 
     public function store(Request $request)
     {
@@ -41,6 +49,8 @@ class TrainerWorkoutController extends Controller
             'reps' => 'required|string|max:50',
             'video_url' => 'nullable|url',
         ]);
+
+        // dd($request->trainee_id);
 
         $day = \Carbon\Carbon::parse($request->workout_date)->format('l');
 

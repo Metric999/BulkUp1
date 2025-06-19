@@ -14,28 +14,31 @@ class TraineeWorkoutController extends Controller
         $user = Auth::user();
         $trainee = $user->traineeProfile;
 
+
         if (!$trainee) {
             abort(403, 'No trainee profile found.');
         }
 
         // Workout yang sudah disubmit
-        $submitted = ProgressSubmission::where('trainee_id', $trainee->user_id)
+        $submitted = ProgressSubmission::where('trainee_id', $user->id)
             ->whereNotNull('workout_id')
             ->pluck('workout_id')
             ->toArray();
+
+            // dd($);
 
         // Toggle submit/unsubmit
         if ($request->has('toggle')) {
             $workoutId = $request->toggle;
 
             if (in_array($workoutId, $submitted)) {
-                ProgressSubmission::where('trainee_id', $trainee->user_id)
+                ProgressSubmission::where('trainee_id', $user->id)
                     ->where('workout_id', $workoutId)
                     ->delete();
                 $submitted = array_diff($submitted, [$workoutId]);
             } else {
                 ProgressSubmission::create([
-                    'trainee_id' => $trainee->user_id,
+                    'trainee_id' => $user->id,
                     'workout_id' => $workoutId,
                     'submitted_at' => now(),
                 ]);
@@ -46,7 +49,7 @@ class TraineeWorkoutController extends Controller
         }
 
         // Ambil workout yang dibuat trainer untuk trainee ini
-        $workouts = Workout::where('trainee_id', $trainee->user_id)
+        $workouts = Workout::where('trainee_id', $user->id)
             ->whereDate('date', today())  // untuk meenampilkan workout hari ini
             ->orderBy('day')
             ->get()
