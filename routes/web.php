@@ -21,6 +21,7 @@ use App\Http\Controllers\InviteTrainerController;
 use App\Http\Controllers\TrainerRegistController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TraineeRegistController;
+use App\Http\Controllers\ProgressSubmissionController; // Pastikan ini di-import!
 use App\Http\Middleware\CheckProfileComplete;
 use App\Http\Middleware\IsTrainer;
 use App\Http\Middleware\IsTrainee;
@@ -42,11 +43,7 @@ Route::get('/a', function () {
 // Public Routes
 // ------------------------
 
-
-
-
 Route::get('/', [landingpageController::class, 'index']);
-
 Route::get('/contact', [landingpageController::class, 'contact']);
 
 Route::get('/loginregis/invite', [InviteTrainerController::class, 'showForm'])->name('trainer.invite.show');
@@ -82,6 +79,11 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
     Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('trainee.mealplan');
 
+    // ROUTES UNTUK PROGRESS SUBMISSION (TRAINEE)
+    // Pastikan ini berada di dalam grup middleware 'auth' dan 'CheckProfileComplete'
+    Route::post('/progress-submissions', [ProgressSubmissionController::class, 'store'])->name('progress.store');
+    Route::delete('/progress-submissions/{progressSubmission}', [ProgressSubmissionController::class, 'destroy'])->name('progress.destroy');
+
     Route::get('/trainee/profile', [TraineeProfileController::class, 'index'])->name('trainee.profile');
     Route::post('/trainee/profile', [TrainerCompleteProfileController::class, 'saveProfile'])->name('trainee.profile.save');
     Route::get('/trainee/profile/edit', [TraineeProfileController::class, 'edit'])->name('profile.edit');
@@ -90,7 +92,6 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::middleware(['auth', IsTrainee::class])->group(function () {
         Route::get('/trainee/notification', [TraineeNotificationController::class, 'index'])->name('trainee.notification');
     });
-    
 
     Route::post('/trainee/feedback', [TraineeFeedbackController::class, 'submit'])->name('trainee.feedback.submit');
     Route::get('/trainee/feedback', [TraineeFeedbackController::class, 'index'])->name('trainee.feedback');
@@ -103,14 +104,12 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::put('/trainer/workout/{id}', [TrainerWorkoutController::class, 'update'])->name('trainer.workout.update');
     Route::delete('/trainer/workout/{id}', [TrainerWorkoutController::class, 'destroy'])->name('trainer.workout.destroy');
 
-    
     Route::prefix('trainer/mealplan')->middleware('auth')->group(function () {
         Route::get('/', [TrainerMealPlanController::class, 'index'])->name('trainer.mealplan');
         Route::post('/', [TrainerMealPlanController::class, 'store'])->name('trainer.mealplan.store');
         Route::put('/{meal}', [TrainerMealPlanController::class, 'update'])->name('trainer.mealplan.update');
         Route::delete('/{meal}', [TrainerMealPlanController::class, 'destroy'])->name('trainer.mealplan.destroy');
     });
-
 
     Route::get('/trainer/progress', [TrainerProgressController::class, 'index'])->name('trainer.progress');
 
@@ -121,10 +120,9 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
     Route::get('/trainer/feedback', [TrainerFeedbackController::class, 'index'])->name('trainer.feedback');
 
     Route::middleware(['auth', IsTrainer::class])->group(function () {
-        Route::get('/trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification'); // ← ini route yang dimaksud
+        Route::get('/trainer/notification', [TrainerNotificationController::class, 'index'])->name('trainer.notification');
         Route::get('/trainer/notification/create', [TrainerNotificationController::class, 'create'])->name('trainer.notification.create');
         Route::post('/trainer/notification', [TrainerNotificationController::class, 'store'])->name('trainer.notification.store');
     });
 
 });
-

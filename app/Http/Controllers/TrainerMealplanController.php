@@ -4,27 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\MealPlan;
 use App\Models\User;
+use App\Models\TraineeProfile; // Import TraineeProfile
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// Simpan ke database
+
 class TrainerMealPlanController extends Controller
 {
     public function index()
     {
-        $trainees = User::with('mealPlans')
-            ->whereHas('traineeProfile', function ($q) {
+        // Ambil User yang merupakan trainee dari trainer yang sedang login,
+        // lalu eager load TraineeProfile mereka dan MealPlans yang terkait dengan profil itu.
+        $trainees = User::whereHas('traineeProfile', function ($q) {
                 $q->where('trainer_id', Auth::id());
             })
+            // Eager load traineeProfile dan mealplans melalui traineeProfile
+            ->with(['traineeProfile.mealplans']) // <-- BERUBAH
             ->get();
-    
+
         return view('trainer.mealplan', compact('trainees'));
     }
-    
 
     public function store(Request $request)
     {
         $request->validate([
-            'trainee_id' => 'required|exists:users,id',
+            'trainee_id' => 'required|exists:users,id', // Tetap User ID dari dropdown
             'date' => 'required|date',
             'time' => 'required',
             'type' => 'required|string|max:50',
@@ -33,9 +36,16 @@ class TrainerMealPlanController extends Controller
             'note' => 'nullable|string',
         ]);
 
+        // Cari TraineeProfile ID dari User ID yang dipilih di form
+        $traineeProfile = TraineeProfile::where('user_id', $request->trainee_id)->first();
+
+        if (!$traineeProfile) {
+            return redirect()->back()->with('error', 'Trainee profile not found for the selected user.');
+        }
+
         MealPlan::create([
-            'trainer_id' => Auth::id(),
-            'trainee_id' => $request->trainee_id,
+            'trainer_id' => Auth::id(), // Trainer ID tetap User ID
+            'trainee_id' => $traineeProfile->id, // <-- BERUBAH: Gunakan trainee_profiles.id
             'date' => $request->date,
             'time' => $request->time,
             'type' => $request->type,

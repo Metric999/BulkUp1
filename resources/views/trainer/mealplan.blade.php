@@ -24,7 +24,7 @@
         <select id="trainee" name="trainee_id" class="form-select w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
           <option value="">-- Select Trainee --</option>
           @foreach($trainees as $trainee)
-            <option value="{{ $trainee->id }}">{{ $trainee->username }}</option>
+            <option value="{{ $trainee->id }}">{{ $trainee->username }}</option> {{-- Tetap gunakan User ID di sini --}}
           @endforeach
         </select>
       </div>
@@ -83,7 +83,7 @@
     <div class="bg-green-100 text-green-700 p-4 mt-6 rounded">
         {{ session('success') }}
     </div>
-@endif
+  @endif
 
 @if(isset($trainees) && count($trainees))
     <div class="mt-10">
@@ -93,69 +93,74 @@
             <div class="mb-6 bg-white p-6 rounded shadow border">
                 <h3 class="text-lg font-semibold mb-3 text-blue-600">Trainee: {{ $trainee->username }}</h3>
 
-                @foreach($trainee->mealPlans as $meal)
-                    <form method="POST" action="{{ route('trainer.mealplan.update', $meal->id) }}" class="border-t pt-4 mt-4 space-y-3">
-                        @csrf
-                        @method('PUT')
+                {{-- Pastikan trainee memiliki profil sebelum mengakses mealplans --}}
+                @if($trainee->traineeProfile && $trainee->traineeProfile->mealplans->count() > 0)
+                    @foreach($trainee->traineeProfile->mealplans as $meal) {{-- <-- BERUBAH --}}
+                        <form method="POST" action="{{ route('trainer.mealplan.update', $meal->id) }}" class="border-t pt-4 mt-4 space-y-3">
+                            @csrf
+                            @method('PUT')
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block font-medium">Date</label>
-                                <input type="date" name="date" value="{{ $meal->date }}" class="w-full border p-2 rounded">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block font-medium">Date</label>
+                                    <input type="date" name="date" value="{{ $meal->date }}" class="w-full border p-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block font-medium">Time</label>
+                                    <input type="time" name="time" value="{{ $meal->time }}" class="w-full border p-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block font-medium">Type</label>
+                                    <select name="type" class="w-full border p-2 rounded">
+                                        <option {{ $meal->type == 'Breakfast' ? 'selected' : '' }}>Breakfast</option>
+                                        <option {{ $meal->type == 'Lunch' ? 'selected' : '' }}>Lunch</option>
+                                        <option {{ $meal->type == 'Dinner' ? 'selected' : '' }}>Dinner</option>
+                                        <option {{ $meal->type == 'Snack' ? 'selected' : '' }}>Snack</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div>
-                                <label class="block font-medium">Time</label>
-                                <input type="time" name="time" value="{{ $meal->time }}" class="w-full border p-2 rounded">
-                            </div>
-                            <div>
-                                <label class="block font-medium">Type</label>
-                                <select name="type" class="w-full border p-2 rounded">
-                                    <option {{ $meal->type == 'Breakfast' ? 'selected' : '' }}>Breakfast</option>
-                                    <option {{ $meal->type == 'Lunch' ? 'selected' : '' }}>Lunch</option>
-                                    <option {{ $meal->type == 'Dinner' ? 'selected' : '' }}>Dinner</option>
-                                    <option {{ $meal->type == 'Snack' ? 'selected' : '' }}>Snack</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-medium">Meal Name</label>
-                                <input type="text" name="meal_name" value="{{ $meal->meal_name }}" class="w-full border p-2 rounded">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-medium">Meal Name</label>
+                                    <input type="text" name="meal_name" value="{{ $meal->meal_name }}" class="w-full border p-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block font-medium">Calories</label>
+                                    <input type="number" name="calories" value="{{ $meal->calories }}" class="w-full border p-2 rounded">
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block font-medium">Calories</label>
-                                <input type="number" name="calories" value="{{ $meal->calories }}" class="w-full border p-2 rounded">
+                                <label class="block font-medium">Note</label>
+                                <textarea name="note" rows="2" class="w-full border p-2 rounded">{{ $meal->note }}</textarea>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block font-medium">Note</label>
-                            <textarea name="note" rows="2" class="w-full border p-2 rounded">{{ $meal->note }}</textarea>
-                        </div>
-
-                        <div class="flex gap-2 mt-2">
-                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Update</button>
+                            <div class="flex gap-2 mt-2">
+                                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Update</button>
+                                {{-- Tombol delete di sini --}}
+                            </div>
                         </form>
-
-                        <form method="POST" action="{{ route('trainer.mealplan.destroy', $meal->id) }}">
+                        <form method="POST" action="{{ route('trainer.mealplan.destroy', $meal->id) }}" class="inline-block">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Delete this meal plan?')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Delete</button>
                         </form>
-                        </div>
-                    </form>
-                @endforeach
+                    @endforeach
+                @else
+                    <p class="text-gray-600">No meal plans assigned for this trainee.</p>
+                @endif
             </div>
         @endforeach
     </div>
+@else
+    <p class="text-gray-600 mt-4">No trainees found or no meal plans to display.</p>
 @endif
 
-  <!-- Tampilkan Daftar Meal Plan -->
-  @if(isset($mealplans) && count($mealplans) > 0)
+  <!-- Bagian ini dihapus karena sudah digantikan oleh loop per trainee di atas -->
+  {{-- @if(isset($mealplans) && count($mealplans) > 0)
     <div class="bg-white p-6 rounded-xl shadow-xl border border-gray-200">
       <h2 class="text-xl font-semibold mb-4 text-gray-800">Meal Plans List</h2>
-
       @foreach($mealplans as $meal)
         <form action="{{ route('trainer.mealplan.update', $meal->id) }}" method="POST" class="border-t pt-4 mt-4 space-y-2">
           @csrf
@@ -200,7 +205,7 @@
         </div>
       @endforeach
     </div>
-  @endif
+  @endif --}}
 </main>
 
 <script>
@@ -210,12 +215,17 @@
   mealForm.addEventListener("submit", function (e) {
     if (!dateInput.value) {
       e.preventDefault();
-      Swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'Please select a date before submitting!',
-        confirmButtonColor: '#f59e0b'
-      });
+      // Pastikan Swal.fire diimpor/tersedia
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Please select a date before submitting!',
+          confirmButtonColor: '#f59e0b'
+        });
+      } else {
+        alert('Please select a date before submitting!'); // Fallback jika Swal tidak ada
+      }
     }
   });
 </script>

@@ -9,13 +9,30 @@
     Today's Meal Plan
   </h2>
 
+  {{-- Tambahkan pesan sukses/error/warning --}}
+  @if (session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md relative mt-4" role="alert">
+      <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+  @endif
+  @if (session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative mt-4" role="alert">
+      <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+  @endif
+  @if (session('warning'))
+    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-md relative mt-4" role="alert">
+      <span class="block sm:inline">{{ session('warning') }}</span>
+    </div>
+  @endif
+
+
   @if ($meals->isEmpty())
     <p class="text-gray-600 mt-4">No meal plans available for today.</p>
   @else
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
       @foreach ($meals as $meal)
         @php
-          $isSubmitted = in_array($meal->id, $submitted);
           $colorMap = [
               'breakfast' => 'yellow',
               'lunch' => 'blue',
@@ -23,6 +40,10 @@
               'snack' => 'green',
           ];
           $color = $colorMap[strtolower($meal->type)] ?? 'gray';
+
+          // Cek apakah meal ini sudah disubmit hari ini
+          $isSubmitted = isset($submittedMealIds[$meal->id]);
+          $progressSubmissionId = $isSubmitted ? $submittedMealIds[$meal->id] : null;
         @endphp
 
         <div class="bg-slate-800 p-6 rounded-xl border-l-8 border-{{ $color }}-500 shadow-md text-white">
@@ -34,14 +55,28 @@
           <p class="italic text-sm">Note : {{ $meal->note }}</p>
 
           @if (!$isSubmitted)
-              <a href="{{ route('trainee.mealplan', ['toggle' => $meal->id, 'submitted' => implode(',', $submitted)]) }}"
-              class="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm transition-all">
-              Submit
-            </a>
+            <form action="{{ route('progress.store') }}" method="POST">
+              @csrf
+              <input type="hidden" name="type" value="mealplan">
+              <input type="hidden" name="item_id" value="{{ $meal->id }}">
+              <button type="submit"
+                      class="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full text-sm transition-all">
+                Submit
+              </button>
+            </form>
           @else
             <span class="inline-block mt-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm">
               ✅ Submitted
             </span>
+            {{-- Tombol untuk membatalkan submit --}}
+            <form action="{{ route('progress.destroy', $progressSubmissionId) }}" method="POST" class="inline-block ml-2">
+                @csrf
+                @method('DELETE') {{-- Penting untuk metode DELETE --}}
+                <button type="submit"
+                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm transition-all">
+                    Batalkan Submit
+                </button>
+            </form>
           @endif
         </div>
       @endforeach

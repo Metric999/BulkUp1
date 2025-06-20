@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('meal_plans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trainer_id');
-            $table->unsignedBigInteger('trainee_id');
+            $table->unsignedBigInteger('trainee_id'); // Ini akan menjadi foreign key ke trainee_profiles.id
             $table->date('date');
             $table->time('time');
             $table->string('type'); // Breakfast, Lunch, etc.
@@ -19,8 +19,10 @@ return new class extends Migration {
             $table->text('note')->nullable();
             $table->timestamps();
 
+            // Foreign key untuk trainer_id (tetap ke users.id)
             $table->foreign('trainer_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('trainee_id')->references('id')->on('users')->onDelete('cascade');
+            // Foreign key untuk trainee_id (BERUBAH: sekarang ke trainee_profiles.id)
+            $table->foreign('trainee_id')->references('id')->on('trainee_profiles')->onDelete('cascade'); // <-- BERUBAH DI SINI
         });
     }
 
