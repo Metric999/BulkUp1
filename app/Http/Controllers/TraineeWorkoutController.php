@@ -20,7 +20,7 @@ class TraineeWorkoutController extends Controller
         }
 
         // Workout yang sudah disubmit
-        $submitted = ProgressSubmission::where('trainee_id', $user->id)
+        $submitted = ProgressSubmission::where('trainee_id', $trainee->id)
             ->whereNotNull('workout_id')
             ->pluck('workout_id')
             ->toArray();
@@ -32,13 +32,13 @@ class TraineeWorkoutController extends Controller
             $workoutId = $request->toggle;
 
             if (in_array($workoutId, $submitted)) {
-                ProgressSubmission::where('trainee_id', $user->id)
+                ProgressSubmission::where('trainee_id', $trainee->id)
                     ->where('workout_id', $workoutId)
                     ->delete();
                 $submitted = array_diff($submitted, [$workoutId]);
             } else {
                 ProgressSubmission::create([
-                    'trainee_id' => $user->id,
+                    'trainee_id' => $trainee->id,
                     'workout_id' => $workoutId,
                     'submitted_at' => now(),
                 ]);

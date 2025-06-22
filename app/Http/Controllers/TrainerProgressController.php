@@ -3,43 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\TraineeProfile;
-use App\Models\Workout;
-use App\Models\MealPlan;
-use App\Models\ProgressSubmission;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Laravel\Prompts\Progress;
+use App\Models\ProgressSubmission;
 
-// Simpan ke database
 class TrainerProgressController extends Controller
 {
     public function index()
-{
-    $trainerId = auth()->user()->id;
+    {
+        $trainerId = auth()->user()->id;
 
-    $trainees = TraineeProfile::with(['user', 'mealPlans', 'progressSubmissions'])
-        ->where('trainer_id', $trainerId)
-        ->get();
+        // Ambil semua trainee yang memiliki trainer_id = trainer yang login
+        $trainees = TraineeProfile::with(['user', 'progressSubmissions'])
+            ->where('trainer_id', $trainerId)
+            ->get();
 
-    $data = $trainees->map(function ($trainee) {
-        $mealplanDone = $trainee->mealPlans->count();
+        // Olah data trainee satu per satu
+        $data = $trainees->map(function ($trainee) {
+    $mealplanDone = $trainee->progressSubmissions
+        ->whereNotNull('meal_id')
+        ->count();
 
-        // dd($trainee->user->id);
+    $workoutDone = $trainee->progressSubmissions
+        ->whereNotNull('workout_id')
+        ->count();
 
-        // $workoutDone = $trainee->progressSubmissions()->count();
-        $workoutDone = ProgressSubmission::where('trainee_id', $trainee->user->id)->count();
+    $lastSubmit = optional(
+        $trainee->progressSubmissions->sortByDesc('created_at')->first()
+    )->created_at;
 
-        $lastSubmit = optional($trainee->progressSubmissions->sortByDesc('created_at')->first())->created_at;
+    return [
+        'name' => $trainee->user->username ?? 'Trainee',
+        'mealplan_done' => $mealplanDone,
+        'workout_done' => $workoutDone,
+        'last_submit' => $lastSubmit ? $lastSubmit->format('d M Y H:i') : '-',
+    ];
+});
 
-        return [
-            'name' => $trainee->user->username ?? 'Trainee',
-            'mealplan_done' => $mealplanDone,
-            'workout_done' => $workoutDone,
-            'last_submit' => $lastSubmit ? $lastSubmit->format('d M Y H:i') : '-',
-        ];
-    });
-
-    return view('trainer.progress', ['trainees' => $data]);
+        return view('trainer.progress', ['trainees' => $data]);
     }
-
 }
