@@ -12,33 +12,13 @@
   </header>
 
   <div id="progressTab" class="p-6 space-y-6 hidden animate-fade-in">
-    {{-- Summary Mingguan --}}
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">This Week's Summary</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="bg-blue-50 p-4 rounded shadow text-center">
-          <p class="text-sm text-gray-600">Calories Burned</p>
-          <p class="text-2xl font-bold text-blue-600">{{ $weeklyCaloriesBurned ?? '1500' }} kcal</p>
-        </div>
-        <div class="bg-green-50 p-4 rounded shadow text-center">
-          <p class="text-sm text-gray-600">Average Duration</p>
-          <p class="text-2xl font-bold text-green-600">{{ $averageDuration ?? '45' }} menit</p>
-        </div>
-        <div class="bg-yellow-50 p-4 rounded shadow text-center">
-          <p class="text-sm text-gray-600">Weight Loss</p>
-          <p class="text-2xl font-bold text-yellow-600">{{ $weightLoss ?? '1.3' }} kg</p>
-        </div>
-        <div class="text-center">
-          <p class="text-sm text-gray-600">Workout Count</p>
-          <p class="text-3xl font-bold">{{ $workoutCount ?? '5' }}</p>
-        </div>
-      </div>
-    </div>
-
     {{-- Motivational Quote --}}
     @php
       $quotes = [
         "Progress is progress, no matter how small.",
+        "Your body can stand almost anything. It's your mind that you have to convince.",
+        "The only bad workout is the one that didn't happen.",
+        "Eat clean, train dirty.",
       ];
     @endphp
     <div class="bg-indigo-50 p-6 rounded shadow text-center text-indigo-700 font-semibold italic">
@@ -47,29 +27,32 @@
 
     {{-- Riwayat Progress Terakhir --}}
     <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-semibold mb-4">Recent Progress</h2>
-      @if(!empty($recentSubmissions) && count($recentSubmissions) > 0)
-        <div class="space-y-4 max-h-64 overflow-y-auto">
-          @foreach ($recentSubmissions as $submission)
-            <div class="bg-gray-100 rounded-lg p-4 shadow flex justify-between items-center">
-              <div>
-                <div class="font-semibold text-lg">{{ \Carbon\Carbon::parse($submission->created_at)->format('d M Y') }}</div>
-                <div class="text-sm text-gray-600">
-                  Berat: {{ $submission->weight }} kg | Workout: {{ $submission->workout_name ?? 'N/A' }}
-                </div>
-              </div>
-              <div class="text-sm text-blue-600">{{ $submission->status ?? 'Completed' }}</div>
-            </div>
-          @endforeach
-        </div>
-      @else
-        <p class="text-gray-500">No progress data available.</p>
-      @endif
+      <h2 class="text-xl font-semibold mb-4">Trainee Progress</h2>
+      <div class="overflow-x-auto shadow-md rounded-lg border border-gray-200">
+        <table class="min-w-full table-auto border-collapse">
+          <tbody>
+            <tr class="border-t hover:bg-gray-50 transition">
+              <td class="px-4 py-3 border font-medium text-gray-800 flex items-center justify-between"><p>Meal Plan</p>
+                {{ $mealplanDoneCount }}
+                @if($mealplanDoneCount > 0)
+                  <button onclick="showDetailModal('mealplan')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-sm">
+                    Detail
+                  </button>
+                @endif
+              </td>
+              <td class="px-4 py-3 border font-medium text-gray-800 flex items-center justify-between"><p>Workout</p>
+                {{ $workoutDoneCount }}
+                @if($workoutDoneCount > 0)
+                  <button onclick="showDetailModal('workout')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-sm">
+                    Detail
+                  </button>
+                @endif
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    
-    
-    
   </div>
 
   <main id="bmiTab" class="hidden max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-6 animate-fade-in">
@@ -120,10 +103,10 @@
           <div class="text-4xl font-bold">{{ $bmiResult }}</div>
           <div class="text-sm mt-2">
             @switch($bmiCategory)
-              @case('Lean') Your weight is less than normal. Consider a healthy, balanced diet. @break
+              @case('Kurus') Your weight is less than normal. Consider a healthy, balanced diet. @break
               @case('Normal') Your weight is ideal. Maintain a healthy lifestyle! @break
-              @case('Fat') You are slightly overweight. Pay attention to your diet and exercise regularly. @break
-              @case('Obesity') You are in the obese category. Consultation with a health professional is recommended.. @break
+              @case('Gemuk') You are slightly overweight. Pay attention to your diet and exercise regularly. @break
+              @case('Obesitas') You are in the obese category. Consultation with a health professional is recommended. @break
               @default
             @endswitch
           </div>
@@ -133,6 +116,23 @@
       </div>
     </div>
   </main>
+
+  {{-- Modal untuk Detail Progress --}}
+  <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-11/12 md:w-1/2 lg:w-1/3 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4 border-b pb-2">
+        <h2 id="modalTitle" class="text-xl font-semibold">Detail Progress</h2>
+        <button onclick="hideDetailModal()" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+      </div>
+      <div id="modalContent" class="text-gray-700">
+        <p class="text-center py-4">Loading...</p>
+      </div>
+      <div class="mt-4 text-right">
+        <button onclick="hideDetailModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full">Close</button>
+      </div>
+    </div>
+  </div>
+
 @endsection
 
 @section('scripts')
@@ -144,21 +144,19 @@
   function showTab(tabId) {
     document.getElementById('progressTab').classList.add('hidden');
     document.getElementById('bmiTab').classList.add('hidden');
+
+    // Remove active styles from all links
+    document.getElementById('progressLink').classList.remove('text-blue-500', 'underline', 'font-semibold');
+    document.getElementById('bmiLink').classList.remove('text-blue-500', 'underline', 'font-semibold');
+    document.getElementById('progressLink').classList.add('text-gray-500', 'hover:text-blue-500');
+    document.getElementById('bmiLink').classList.add('text-gray-500', 'hover:text-blue-500');
+
+    // Add active styles to the clicked link and show the tab
     document.getElementById(tabId).classList.remove('hidden');
-
-    const progressLink = document.getElementById('progressLink');
-    const bmiLink = document.getElementById('bmiLink');
-
-    progressLink.classList.remove('text-blue-500', 'underline', 'font-semibold');
-    bmiLink.classList.remove('text-blue-500', 'underline', 'font-semibold');
-
-    progressLink.classList.add('text-gray-500', 'hover:text-blue-500');
-    bmiLink.classList.add('text-gray-500', 'hover:text-blue-500');
-
     if (tabId === 'progressTab') {
-      progressLink.classList.add('text-blue-500', 'underline', 'font-semibold');
+      document.getElementById('progressLink').classList.add('text-blue-500', 'underline', 'font-semibold');
     } else {
-      bmiLink.classList.add('text-blue-500', 'underline', 'font-semibold');
+      document.getElementById('bmiLink').classList.add('text-blue-500', 'underline', 'font-semibold');
     }
   }
 
@@ -170,7 +168,75 @@
   }
 
   window.onload = function () {
+    // Ensure the initial active tab is set correctly based on the controller's passed value
     showTab(@json($activeTab));
   };
+
+  // --- Modal Logic for Detail Progress ---
+  const detailModal = document.getElementById('detailModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalContent = document.getElementById('modalContent');
+
+  function showDetailModal(type) {
+    modalContent.innerHTML = '<p class="text-center py-4">Loading...</p>'; // Show loading
+    detailModal.classList.remove('hidden');
+
+    let url = '';
+    let title = '';
+
+    if (type === 'mealplan') {
+      url = "{{ route('trainee.progress.submitted_mealplans') }}";
+      title = 'Submitted Meal Plans';
+    } else if (type === 'workout') {
+      url = "{{ route('trainee.progress.submitted_workouts') }}";
+      title = 'Submitted Workouts';
+    }
+
+    modalTitle.innerText = title;
+
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.length === 0) {
+          modalContent.innerHTML = `<p class="text-center py-4">No ${type.replace('plan', ' plan').toLowerCase()}s submitted yet.</p>`;
+        } else {
+          let html = '<ul class="list-disc pl-5 space-y-2">';
+          data.forEach(item => {
+            if (type === 'mealplan') {
+              // Format date and time for better readability
+              const mealDate = new Date(item.date + 'T' + item.time); // Combine date and time
+              html += `<li><strong>${item.type} (${mealDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</strong>: ${item.meal_name} (${item.calories} kcal) on ${mealDate.toLocaleDateString()} - Note: ${item.note || 'N/A'}</li>`;
+            } else if (type === 'workout') {
+              const workoutDate = new Date(item.date); // Assuming workout has a 'date' field
+              html += `<li><strong>${item.name}</strong> on ${workoutDate.toLocaleDateString()} - Category: ${item.kategori || 'N/A'} Difficulty: ${item.difficult || 'N/A'} Reps: ${item.reps || 'N/A'} </li>`;
+            }
+          });
+          html += '</ul>';
+          modalContent.innerHTML = html;
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        modalContent.innerHTML = `<p class="text-center py-4 text-red-500">Failed to load details. Please try again.</p>`;
+      });
+  }
+
+  function hideDetailModal() {
+    detailModal.classList.add('hidden');
+    modalContent.innerHTML = ''; // Clear content when hidden
+  }
+
+  // Close modal if clicked outside
+  detailModal.addEventListener('click', function(event) {
+    if (event.target === detailModal) {
+      hideDetailModal();
+    }
+  });
 </script>
+<script src="https://cdn.tailwindcss.com"></script> {{-- Pastikan TailwindCSS dimuat --}}
 @endsection

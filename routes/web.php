@@ -78,6 +78,8 @@ Route::middleware(['auth', CheckProfileComplete::class])->group(function () {
 
     Route::get('/trainee/workout', [TraineeWorkoutController::class, 'index'])->name('trainee.workout');
     Route::get('/trainee/mealplan', [TraineeMealplanController::class, 'index'])->name('trainee.mealplan');
+    Route::get('/trainee/progress/submitted-mealplans', [TraineeHomeController::class, 'getSubmittedMealPlans'])->name('trainee.progress.submitted_mealplans');
+    Route::get('/trainee/progress/submitted-workouts', [TraineeHomeController::class, 'getSubmittedWorkouts'])->name('trainee.progress.submitted_workouts');
 
     // ROUTES UNTUK PROGRESS SUBMISSION (TRAINEE)
     // Pastikan ini berada di dalam grup middleware 'auth' dan 'CheckProfileComplete'
