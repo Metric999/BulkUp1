@@ -19,6 +19,25 @@
       If you want to register as a <span class="font-semibold text-blue-600">Trainer</span>, please contact the number or email available on the <a href="/contact" class="text-blue-500 underline">Contact</a> page. 
       After getting the invitation code, enter the code below to continue the registration process as a Trainer.
     </p>
+    <button onclick="showDetailModal()" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-sm mb-4">
+  Requirements
+</button>
+
+    {{-- Modal untuk Persyaratan --}}
+  <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-11/12 md:w-1/2 lg:w-1/3 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4 border-b pb-2">
+        <h2 id="modalTitle" class="text-xl font-semibold">Requirements to become a trainer</h2>
+        <button onclick="hideDetailModal()" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+      </div>
+      <div id="modalContent" class="text-gray-700">
+        <p class="text-center py-4">Loading...</p>
+      </div>
+      <div class="mt-4 text-right">
+        <button onclick="hideDetailModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full">Close</button>
+      </div>
+    </div>
+  </div>
 
     <form method="POST" action="{{ route('trainer.invite.verify') }}">
       @csrf
@@ -48,6 +67,22 @@
     }
   </script>
   @endif
+  <script>
+  function showDetailModal() {
+    document.getElementById('detailModal').classList.remove('hidden');
+    document.getElementById('modalContent').innerHTML = `
+      <ul class="list-disc list-inside space-y-2">
+        <li>Have a valid fitness training certification</li>
+        <li>Minimum 1 year experience in guiding clients</li>
+        <li>Able to create workout plans and meal plans</li>
+        <li>Willing to attend internal training on the BulkUp platform</li>
+      </ul>
+    `;
+  }
 
+  function hideDetailModal() {
+    document.getElementById('detailModal').classList.add('hidden');
+  }
+</script>
 </body>
 </html>

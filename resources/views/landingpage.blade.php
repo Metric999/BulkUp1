@@ -102,18 +102,24 @@
   </section>
 
   <!-- About -->
-  <section id="about" class="bg-[#111827] text-white py-20 px-6 md:px-40">
-    <div class="flex flex-col md:flex-row items-center gap-10">
-      <img src="Screenshot 2025-04-18 190600.png" alt="BulkUp Logo" class="w-64 rounded mx-auto md:mx-0 fade-in" style="transition-delay: 0.4s;" />
-      <div class="max-w-xl text-lg leading-relaxed fade-in" style="transition-delay: 0.6s;">
-        <p class="text-2xl md:text-xl font-bold mb-4">
-          BulkUp is a daily workout app designed to help you shape your ideal body and stay consistent with your workout routine.
-          With flexible and structured workout features, BulkUp is ready to accompany you every step of your physical transformation — 
-          from beginner to seasoned athlete.
-        </p>
-      </div>
+<section id="about" class="bg-[#111827] text-white py-20 px-6 md:px-20 lg:px-40">
+  <div class="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 lg:gap-20">
+    {{-- Mengubah ukuran gambar agar lebih besar dan responsif --}}
+    <img src="Screenshot 2025-04-18 190600.png" alt="BulkUp Logo" 
+         class="w-48 sm:w-56 md:w-64 lg:w-80 xl:w-96 rounded-lg mx-auto md:mx-0 fade-in object-contain" 
+         style="transition-delay: 0.4s;" />
+    
+    <div class="max-w-full md:max-w-3xl lg:max-w-4xl text-lg leading-relaxed text-center md:text-left fade-in" 
+         style="transition-delay: 0.6s;">
+      {{-- Mengubah ukuran teks agar lebih besar dan memenuhi ruang --}}
+      <p class="text-xl sm:text-1xl md:text-2xl lg:text-3xl font-bold mb-4">
+        BulkUp is a daily workout app designed to help you shape your ideal body and stay consistent with your workout routine.
+        With flexible and structured workout features, BulkUp is ready to accompany you every step of your physical transformation — 
+        from beginner to seasoned athlete.
+      </p>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- FAQ -->
   <section id="faq" class="bg-[#1F2937] py-16 px-6 md:px-40">
@@ -180,7 +186,7 @@
       </div>
       <div>
         <h3 class="text-xl font-bold mb-4">Contact Info</h3>
-        <p class="mb-2">📱 <strong>WhatsApp:</strong> +62 812-3456-7890</p>
+        <p class="mb-2">📱 <strong>WhatsApp:</strong> +62 822-8643-0352 (Ruby Bengkong 24)</p>
         <p class="mb-2">📧 <strong>Email:</strong> bulkup.support@gmail.com</p>
         <p>📍 <strong>Address:</strong> Batam, Indonesia</p>
       </div>
