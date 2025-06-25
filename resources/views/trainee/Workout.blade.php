@@ -52,15 +52,21 @@
                     @endphp
 
                     @if(!$isSubmitted)
-                        <a href="{{ route('trainee.workout', ['submitted' => implode(',', $submitted ?? []), 'toggle' => $w->id]) }}"
-                        class="inline-block mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-full text-sm transition-all">
-                            Submit
-                        </a>
-                    @else
-                        <span class="inline-block mt-3 bg-green-500 text-white px-4 py-1 rounded-full text-sm">
-                            ✅ Submitted
-                        </span>
-                    @endif        
+    <a href="{{ route('trainee.workout', ['submitted' => implode(',', $submitted ?? []), 'toggle' => $w->id]) }}"
+        class="inline-block mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-full text-sm transition-all">
+         Submit
+    </a>
+@else
+    <div class="mt-3 space-y-1">
+        <span class="inline-block bg-green-500 text-white px-4 py-1 rounded-full text-sm">
+            ✅ Submitted
+        </span>
+        <a href="{{ route('trainee.workout', ['submitted' => implode(',', $submitted ?? []), 'toggle' => $w->id]) }}"
+            class="inline-block bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-full text-sm transition-all">
+            ❌ Cancel Submit
+        </a>
+    </div>
+@endif       
                 </div>
             @endforeach
         </div>

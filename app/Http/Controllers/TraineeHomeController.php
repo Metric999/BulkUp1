@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\TraineeProfile;
 use App\Models\ProgressSubmission;
 use App\Models\MealPlan;
-use App\Models\Workout; // Pastikan model ini di-import
+use App\Models\Workout;
 use Carbon\Carbon;
 
 class TraineeHomeController extends Controller
@@ -22,11 +22,10 @@ class TraineeHomeController extends Controller
         $traineeProfile = $user->traineeProfile;
 
         if (!$traineeProfile) {
-            // Redirect jika profil trainee belum lengkap
             return redirect()->route('trainee.profile.complete')->with('warning', 'Please complete your profile first.');
         }
 
-        // Data untuk BMI Calculator
+        // Data default dari profil
         $gender = $request->old('gender', $traineeProfile->gender);
         $weight = $request->old('weight', $traineeProfile->weight);
         $age = $request->old('age', $traineeProfile->age);
@@ -34,15 +33,14 @@ class TraineeHomeController extends Controller
         $bmiResult = null;
         $bmiCategory = '';
 
-        // Jika ada data BMI yang di-submit
+        // Hitung BMI jika ada form POST
         if ($request->isMethod('post')) {
             $bmiData = $this->calculateBMI($request);
             $bmiResult = $bmiData['bmiResult'];
             $bmiCategory = $bmiData['bmiCategory'];
         }
 
-        // Data untuk Progress
-        // Menggunakan trainee_profiles.id untuk query ke progress_submissions
+        // Hitung jumlah meal dan workout yang disubmit
         $traineeProfileId = $traineeProfile->id;
 
         $mealplanDoneCount = ProgressSubmission::where('trainee_id', $traineeProfileId)
@@ -53,7 +51,6 @@ class TraineeHomeController extends Controller
             ->whereNotNull('workout_id')
             ->count();
 
-        // Tentukan tab aktif (default 'progressTab')
         $activeTab = $request->query('tab', 'progressTab');
 
         return view('trainee.home', compact(
@@ -63,7 +60,7 @@ class TraineeHomeController extends Controller
     }
 
     /**
-     * Menghitung BMI (method yang sudah ada)
+     * Hanya menghitung BMI tanpa menyimpan ke database.
      */
     public function calculateBMI(Request $request)
     {
@@ -89,18 +86,6 @@ class TraineeHomeController extends Controller
             $category = 'Obesitas';
         }
 
-        // Update trainee profile with new BMI data
-        $traineeProfile = Auth::user()->traineeProfile;
-        if ($traineeProfile) {
-            $traineeProfile->update([
-                'gender' => $request->gender,
-                'weight' => $request->weight,
-                'age' => $request->age,
-                'height' => $request->height,
-                // Anda bisa menyimpan BMI result dan category jika ada kolomnya di TraineeProfile
-            ]);
-        }
-
         return [
             'bmiResult' => $bmi,
             'bmiCategory' => $category,
@@ -108,8 +93,7 @@ class TraineeHomeController extends Controller
     }
 
     /**
-     * Mengambil daftar meal plan yang sudah disubmit oleh trainee.
-     * Dipanggil melalui AJAX.
+     * Mendapatkan daftar meal plan yang disubmit (AJAX).
      */
     public function getSubmittedMealPlans(Request $request)
     {
@@ -122,7 +106,7 @@ class TraineeHomeController extends Controller
 
         $submittedMealPlanIds = ProgressSubmission::where('trainee_id', $traineeProfile->id)
             ->whereNotNull('meal_id')
-            ->pluck('meal_id'); // Ambil hanya ID meal plan yang sudah disubmit
+            ->pluck('meal_id');
 
         $submittedMealPlans = MealPlan::whereIn('id', $submittedMealPlanIds)
             ->orderBy('date', 'desc')
@@ -133,8 +117,7 @@ class TraineeHomeController extends Controller
     }
 
     /**
-     * Mengambil daftar workout yang sudah disubmit oleh trainee.
-     * Dipanggil melalui AJAX.
+     * Mendapatkan daftar workout yang disubmit (AJAX).
      */
     public function getSubmittedWorkouts(Request $request)
     {
@@ -147,12 +130,10 @@ class TraineeHomeController extends Controller
 
         $submittedWorkoutIds = ProgressSubmission::where('trainee_id', $traineeProfile->id)
             ->whereNotNull('workout_id')
-            ->pluck('workout_id'); // Ambil hanya ID workout yang sudah disubmit
+            ->pluck('workout_id');
 
-        // Mengambil detail workout. Eloquent secara default akan mengambil semua kolom,
-        // jadi kategori, difficulty, dan reps seharusnya sudah ada jika ada di tabel.
         $submittedWorkouts = Workout::whereIn('id', $submittedWorkoutIds)
-            ->orderBy('date', 'desc') // Asumsi model Workout memiliki kolom 'date'
+            ->orderBy('date', 'desc')
             ->get();
 
         return response()->json($submittedWorkouts);
