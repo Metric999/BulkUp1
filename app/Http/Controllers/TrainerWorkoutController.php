@@ -2,66 +2,132 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Workout;
+use App\Models\User;
+use App\Models\ProgressSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\TrainerProfile;
 
-class TrainerCompleteProfileController extends Controller
+class TrainerWorkoutController extends Controller
 {
     /**
-     * Menampilkan form isi profile trainer
+     * Menampilkan daftar workout berdasarkan trainee yang dipilih,
+     * serta menyembunyikan workout yang sudah disubmit trainee.
      */
-    public function showProfileForm()
+    public function index(Request $request)
     {
-        // Ambil data profil jika sudah pernah diisi
-        $trainerProfile = TrainerProfile::where('user_id', Auth::id())->first();
+        $trainees = User::whereHas('traineeProfile', function ($q) {
+            $q->where('trainer_id', Auth::id());
+        })->get();
 
-        return view('completeprofile.trainerprofile', compact('trainerProfile'));
+        $selectedTraineeId = $request->input('trainee_id');
+        $selectedTrainee = null;
+        $workouts = [];
+
+        // Jika hanya satu trainee, pilih otomatis
+        if (!$selectedTraineeId && $trainees->count() === 1) {
+            $selectedTraineeId = $trainees->first()->id;
+        }
+
+        if ($selectedTraineeId) {
+            $selectedTrainee = $trainees->where('id', $selectedTraineeId)->first();
+
+            if ($selectedTrainee && $selectedTrainee->traineeProfile) {
+                $traineeProfileId = $selectedTrainee->traineeProfile->id;
+
+                // Ambil workout ID yang sudah disubmit oleh trainee
+                $submittedWorkoutIds = ProgressSubmission::where('trainee_id', $traineeProfileId)
+                    ->whereNotNull('workout_id')
+                    ->pluck('workout_id')
+                    ->toArray();
+
+                // Tampilkan workout yang belum disubmit
+                $workouts = Workout::where('trainee_id', $selectedTrainee->id)
+                    ->whereNotIn('id', $submittedWorkoutIds)
+                    ->orderByDesc('date')
+                    ->get();
+            }
+        }
+
+        return view('trainer.workout', compact('trainees', 'selectedTrainee', 'workouts'));
     }
 
     /**
-     * Menyimpan data profile trainer
+     * Menyimpan workout baru untuk trainee.
      */
-    public function saveProfile(Request $request)
+    public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name'   => 'required|string|max:255',
-            'gender' => 'required|in:Male,Female',
-            'dob'    => 'required|date',
-            'height' => 'required|numeric|min:30|max:300',
-            'weight' => 'required|numeric|min:10|max:500',
-            'about'  => 'nullable|string|max:1000',
-            'photo'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        $request->validate([
+            'trainee_id'   => 'required|exists:users,id',
+            'workout_date' => 'required|date',
+            'name'         => 'required|string|max:100',
+            'category'     => 'required|string|max:100',
+            'difficulty'   => 'required|string|max:50',
+            'reps'         => 'required|string|max:50',
+            'video_url'    => 'nullable|url',
         ]);
 
-        $user = Auth::user();
+        $day = \Carbon\Carbon::parse($request->workout_date)->format('l');
 
-        // Ambil profil lama (jika ada)
-        $existingProfile = TrainerProfile::where('user_id', $user->id)->first();
-        $photoPath = $existingProfile->photo ?? null;
+        Workout::create([
+            'trainer_id' => Auth::id(),
+            'trainee_id' => $request->trainee_id,
+            'day'        => $day,
+            'date'       => $request->workout_date,
+            'name'       => $request->name,
+            'kategori'   => $request->category,
+            'difficult'  => $request->difficulty,
+            'reps'       => $request->reps,
+            'videoUrl'   => $request->video_url,
+        ]);
 
-        // Simpan foto jika di-upload
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('uploads/trainers', 'public');
+        return redirect()->back()->with('success', 'Workout added successfully.');
+    }
+
+    /**
+     * Memperbarui data workout yang ada.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name'       => 'required|string|max:100',
+            'category'   => 'required|string|max:100',
+            'difficulty' => 'required|string|max:50',
+            'reps'       => 'required|string|max:50',
+            'video_url'  => 'nullable|url',
+        ]);
+
+        $workout = Workout::findOrFail($id);
+
+        // Opsional: pastikan hanya trainer pemilik yang bisa update
+        if ($workout->trainer_id !== Auth::id()) {
+            abort(403);
         }
 
-        // Simpan atau update data ke database
-        TrainerProfile::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'name'   => $validated['name'],
-                'gender' => $validated['gender'],
-                'dob'    => $validated['dob'],
-                'height' => $validated['height'],
-                'weight' => $validated['weight'],
-                'about'  => $validated['about'] ?? null,
-                'photo'  => $photoPath,
-            ]
-        );
+        $workout->update([
+            'name'      => $request->name,
+            'kategori'  => $request->category,
+            'difficult' => $request->difficulty,
+            'reps'      => $request->reps,
+            'videoUrl'  => $request->video_url,
+        ]);
 
-        // Update flag profil lengkap
-        $user->update(['profile_completed' => true]);
+        return back()->with('success', 'Workout updated successfully.');
+    }
 
-        return redirect()->route('trainer.home')->with('success', 'Trainer profile saved!');
+    /**
+     * Menghapus workout.
+     */
+    public function destroy($id)
+    {
+        $workout = Workout::findOrFail($id);
+
+        if ($workout->trainer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $workout->delete();
+
+        return back()->with('success', 'Workout deleted successfully.');
     }
 }
