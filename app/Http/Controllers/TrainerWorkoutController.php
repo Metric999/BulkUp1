@@ -2,100 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Workout;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\TrainerProfile;
 
-class TrainerWorkoutController extends Controller
+class TrainerCompleteProfileController extends Controller
 {
-    public function index(Request $request)
-{
-    $trainees = User::whereHas('traineeProfile', function ($q) {
-        $q->where('trainer_id', Auth::id());
-    })->get();
-
-    $selectedTraineeId = $request->input('trainee_id');
-    $selectedTrainee = null;
-    $workouts = [];
-
-    // Default: jika trainee tidak dipilih dan hanya 1 trainee, pilih otomatis
-    if (!$selectedTraineeId && $trainees->count() === 1) {
-        $selectedTraineeId = $trainees->first()->id;
-    }
-
-    if ($selectedTraineeId) {
-        $selectedTrainee = $trainees->where('id', $selectedTraineeId)->first();
-
-        if ($selectedTrainee) {
-            $workouts = Workout::where('trainee_id', $selectedTrainee->id)
-                ->orderByDesc('date')
-                ->get();
-        }
-    }
-
-    return view('trainer.workout', compact('trainees', 'selectedTrainee', 'workouts'));
-}
-
-
-    public function store(Request $request)
+    /**
+     * Menampilkan form isi profile trainer
+     */
+    public function showProfileForm()
     {
-        $request->validate([
-            'trainee_id' => 'required|exists:users,id',
-            'workout_date' => 'required|date',
-            'name' => 'required|string|max:100',
-            'category' => 'required|string|max:100',
-            'difficulty' => 'required|string|max:50',
-            'reps' => 'required|string|max:50',
-            'video_url' => 'nullable|url',
-        ]);
+        // Ambil data profil jika sudah pernah diisi
+        $trainerProfile = TrainerProfile::where('user_id', Auth::id())->first();
 
-        // dd($request->trainee_id);
-
-        $day = \Carbon\Carbon::parse($request->workout_date)->format('l');
-
-        Workout::create([
-            'trainer_id' => Auth::id(),
-            'trainee_id' => $request->trainee_id,
-            'day' => $day,
-            'date' => $request->workout_date,
-            'name' => $request->name,
-            'kategori' => $request->category,
-            'difficult' => $request->difficulty,
-            'reps' => $request->reps,
-            'videoUrl' => $request->video_url,
-        ]);
-
-        return redirect()->back()->with('success', 'Workout added successfully.');
+        return view('completeprofile.trainerprofile', compact('trainerProfile'));
     }
 
-    public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string',
-        'category' => 'required|string',
-        'difficulty' => 'required|string',
-        'reps' => 'required|string',
-        'video_url' => 'nullable|url',
-    ]);
+    /**
+     * Menyimpan data profile trainer
+     */
+    public function saveProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255',
+            'gender' => 'required|in:Male,Female',
+            'dob'    => 'required|date',
+            'height' => 'required|numeric|min:30|max:300',
+            'weight' => 'required|numeric|min:10|max:500',
+            'about'  => 'nullable|string|max:1000',
+            'photo'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-    $workout = Workout::findOrFail($id);
-    $workout->update([
-        'name' => $request->name,
-        'kategori' => $request->category,
-        'difficult' => $request->difficulty,
-        'reps' => $request->reps,
-        'videoUrl' => $request->video_url,
-    ]);
+        $user = Auth::user();
 
-    return back()->with('success', 'Workout updated successfully.');
-}
+        // Ambil profil lama (jika ada)
+        $existingProfile = TrainerProfile::where('user_id', $user->id)->first();
+        $photoPath = $existingProfile->photo ?? null;
 
-public function destroy($id)
-{
-    $workout = Workout::findOrFail($id);
-    $workout->delete();
+        // Simpan foto jika di-upload
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('uploads/trainers', 'public');
+        }
 
-    return back()->with('success', 'Workout deleted successfully.');
-}
+        // Simpan atau update data ke database
+        TrainerProfile::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'name'   => $validated['name'],
+                'gender' => $validated['gender'],
+                'dob'    => $validated['dob'],
+                'height' => $validated['height'],
+                'weight' => $validated['weight'],
+                'about'  => $validated['about'] ?? null,
+                'photo'  => $photoPath,
+            ]
+        );
+
+        // Update flag profil lengkap
+        $user->update(['profile_completed' => true]);
+
+        return redirect()->route('trainer.home')->with('success', 'Trainer profile saved!');
+    }
 }
