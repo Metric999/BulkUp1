@@ -158,10 +158,6 @@
           Don't have an account?
           <a href="{{ route('trainee.register.form') }}" class="text-blue-500 hover:underline">Register</a>
         </p>
-        <p class="text-gray-300 text-center text-sm">
-          Forgot your password?
-          <a href="{{ route('trainee.register.form') }}" class="text-blue-500 hover:underline">Forgot Password</a>
-        </p>
       </form>
     </div>
   </section>

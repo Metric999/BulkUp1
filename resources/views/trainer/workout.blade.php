@@ -46,10 +46,16 @@
             <input type="text" id="category" name="category" required class="w-full p-2 border rounded" />
         </div>
 
+        
         <div>
-            <label for="difficulty" class="block font-medium">Difficulty</label>
-            <input type="text" id="difficulty" name="difficulty" required class="w-full p-2 border rounded" />
+            <label class="block font-medium">Difficulty</label>
+            <select   id="difficulty"  name="difficulty" class="w-full border p-2 rounded">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
         </div>
+
 
         <div>
             <label for="reps" class="block font-medium">Reps (e.g., 3x12)</label>
