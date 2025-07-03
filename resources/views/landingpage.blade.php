@@ -78,6 +78,7 @@
       <a href="#home" class="nav-link font-semibold hover:text-blue-400 transition">Home</a>
       <a href="#about" class="nav-link font-semibold hover:text-blue-400 transition">About</a>
       <a href="#faq" class="nav-link font-semibold hover:text-blue-400 transition">FAQ</a>
+      <a href="#testimonials" class="nav-link font-semibold hover:text-blue-400 transition">Testimonials</a>
       <a href="#contact" class="nav-link font-semibold hover:text-blue-400 transition">Contact</a>
       <a href="loginregis/login" class="bg-blue-600 text-white px-5 py-2 rounded-full font-bold hover:bg-blue-700 transition btn-animate">Sign In</a>
     </div>
@@ -186,7 +187,7 @@
       </div>
       <div>
         <h3 class="text-xl font-bold mb-4">Contact Info</h3>
-        <p class="mb-2">📱 <strong>WhatsApp:</strong> +62 822-8643-0352 (Ruby Bengkong 24)</p>
+        <p class="mb-2">📱 <strong>WhatsApp:</strong> +62 822-8643-0352 </p>
         <p class="mb-2">📧 <strong>Email:</strong> bulkup.support@gmail.com</p>
         <p>📍 <strong>Address:</strong> Batam, Indonesia</p>
       </div>

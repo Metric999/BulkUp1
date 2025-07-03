@@ -16,7 +16,7 @@
     <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Trainer Invitation Code</h2>
 
     <p class="text-gray-600 text-sm mb-6">
-      If you want to register as a <span class="font-semibold text-blue-600">Trainer</span>, please contact the number or email available on the <a href="/contact" class="text-blue-500 underline">Contact</a> page. 
+      If you want to register as a <span class="font-semibold text-blue-600">Trainer</span>, please contact the number or email available on the <a href="{{ url('/#contact') }}" class="text-blue-500 underline">Contact</a> page. 
       After getting the invitation code, enter the code below to continue the registration process as a Trainer.
     </p>
     <button onclick="showDetailModal()" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-sm mb-4">

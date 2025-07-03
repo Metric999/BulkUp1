@@ -1,13 +1,13 @@
 @extends('layouts.trainee')
 
-@section('title', 'Notifikasi')
+@section('title', 'Reminder')
 
 @section('content')
 <div class="min-h-screen w-full bg-gray-100 py-8 px-6">
     <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         <!-- Header -->
         <div class="p-6 border-b flex justify-between items-center bg-blue-50">
-            <h2 class="text-2xl font-bold text-gray-800">🔔 Notifications</h2>
+            <h2 class="text-2xl font-bold text-gray-800">🔔 Reminder</h2>
         </div>
 
         <!-- Isi Notifikasi -->
