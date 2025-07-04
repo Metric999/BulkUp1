@@ -57,15 +57,16 @@
       </div>
     </div>
 
-    <div class="mt-4 w-full">
-      <label class="block font-medium mb-1">Meal Name</label>
-      <input type="text" name="meal_name" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
-    </div>
-
-    <div class="mt-4 w-full">
-      <label class="block font-medium mb-1">Calories</label>
-      <input type="number" name="calories" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 w-full">
+  <div>
+    <label class="block font-medium mb-1">Meal Name</label>
+    <input type="text" name="meal_name" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
+  </div>
+  <div>
+    <label class="block font-medium mb-1">Calories</label>
+    <input type="number" name="calories" class="w-full p-3 rounded-lg bg-gray-100 border border-gray-300" required>
+  </div>
+</div>
 
     <div class="mt-4 w-full">
       <label class="block font-medium mb-1">Note</label>

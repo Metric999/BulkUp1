@@ -10,8 +10,8 @@
 @endif
 
 <!-- Select Trainee -->
-<div class="mb-6">
-    <form method="GET" action="{{ route('trainer.workout') }}">
+<div class="grid grid-cols-1 md:grid-cols-7 gap-4 w-full pl-10">
+<form method="GET" action="{{ route('trainer.workout') }}">
         <label for="trainee_id" class="block font-medium mb-1">Select Trainee</label>
         <select name="trainee_id" id="trainee_id" class="w-full p-2 border rounded" onchange="this.form.submit()" required>
             <option value="">-- Select Trainee --</option>
@@ -25,57 +25,63 @@
 </div>
 
 <!-- Form Tambah Workout -->
-<div class="bg-white p-6 rounded shadow w-full mb-8">
+<div class="container mx-auto bg-white p-6 rounded shadow w-full mb-8">
     <h2 class="text-xl font-semibold mb-4">Add Workout for Trainee</h2>
     <form method="POST" action="{{ route('trainer.workout.store', ['trainee_id' => request('trainee_id')]) }}" class="space-y-4">
         @csrf
         <input type="hidden" name="trainee_id" value="{{ request('trainee_id') }}">
 
-        <div>
-            <label for="workout_date" class="block font-medium">Workout Date</label>
-            <input type="date" id="workout_date" name="workout_date" required class="w-full p-2 border rounded" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <div>
+                <label for="workout_date" class="block font-medium">Workout Date</label>
+                <input type="date" id="workout_date" name="workout_date" required class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="name" class="block font-medium">Workout Name</label>
+                <input type="text" id="name" name="name" required class="w-full p-2 border rounded" />
+            </div>
         </div>
 
-        <div>
-            <label for="name" class="block font-medium">Workout Name</label>
-            <input type="text" id="name" name="name" required class="w-full p-2 border rounded" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <div>
+                <label for="category" class="block font-medium">Category</label>
+                <input type="text" id="category" name="category" required class="w-full p-2 border rounded" />
+            </div>
+            <div>
+                <label class="block font-medium">Difficulty</label>
+                <select id="difficulty" name="difficulty" class="w-full border p-2 rounded">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
         </div>
 
-        <div>
-            <label for="category" class="block font-medium">Category</label>
-            <input type="text" id="category" name="category" required class="w-full p-2 border rounded" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <div>
+                <label for="reps" class="block font-medium">Reps (e.g., 3x12)</label>
+                <input type="text" id="reps" name="reps" required class="w-full p-2 border rounded" />
+            </div>
+
+            <div>
+                <label for="video_url" class="block font-medium">Video URL (optional)</label>
+                <input type="url" id="video_url" name="video_url" class="w-full p-2 border rounded" />
+            </div>
         </div>
 
-        
-        <div>
-            <label class="block font-medium">Difficulty</label>
-            <select   id="difficulty"  name="difficulty" class="w-full border p-2 rounded">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-        </div>
-
-
-        <div>
-            <label for="reps" class="block font-medium">Reps (e.g., 3x12)</label>
-            <input type="text" id="reps" name="reps" required class="w-full p-2 border rounded" />
-        </div>
-
-        <div>
-            <label for="video_url" class="block font-medium">Video URL (optional)</label>
-            <input type="url" id="video_url" name="video_url" class="w-full p-2 border rounded" />
-        </div>
-
-        <button type="submit" class="bg-blue-600 text-white py-2 rounded w-full hover:bg-blue-700">
-            Add Workout
-        </button>
+        <div class="mt-6 text-right">
+      <button type="submit" class="bg-green-500 hover:bg-green-600 transition text-white font-semibold px-6 py-3 rounded-full shadow">
+        ➕ Add Workout
+      </button>
+    </div>
     </form>
 </div>
 
+
 <!-- Workout List -->
 @if(isset($selectedTrainee))
-    <div class="bg-white p-6 rounded shadow w-full">
+<div class="container mx-auto bg-white p-6 rounded shadow w-full mb-8">
         <h2 class="text-xl font-semibold mb-4">Workout List for {{ $selectedTrainee->username }}</h2>
 
         @foreach($workouts as $workout)

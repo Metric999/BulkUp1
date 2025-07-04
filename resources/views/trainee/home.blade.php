@@ -4,7 +4,7 @@
 
 @section('content')
 <header class="bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg p-5 flex flex-col md:flex-row justify-between items-center text-white">
-    <h1 class="text-3xl font-extrabold mb-3 md:mb-0">Your Trainee Dashboard</h1>
+    <h1 class="text-3xl font-extrabold mb-3 md:mb-0">Dashboard</h1>
     <nav class="space-x-4 sm:space-x-6 flex flex-wrap justify-center">
         <button id="progressLink" onclick="showTab('progressTab')" class="nav-button active">Progress</button>
         <button id="bmiLink" onclick="showTab('bmiTab')" class="nav-button">BMI Calculator</button>
