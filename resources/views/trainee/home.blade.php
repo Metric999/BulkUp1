@@ -283,36 +283,6 @@
 </script>
 
 <style>
-    /* Custom Tailwind CSS classes for better aesthetics */
-    .nav-button {
-        @apply font-bold text-lg px-4 py-2 rounded-full transition-all duration-300 ease-in-out;
-        @apply text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
-    }
-
-    .nav-button.active {
-        @apply bg-white text-blue-700 shadow-md;
-    }
-
-    .detail-button {
-        @apply bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-5 rounded-full text-sm transition-all duration-300 ease-in-out shadow-md hover:shadow-lg;
-    }
-
-    .form-input {
-        @apply w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ease-in-out;
-    }
-
-    .button-primary {
-        @apply bg-blue-700 text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition-all duration-300 ease-in-out font-semibold shadow-md hover:shadow-lg;
-    }
-
-    .button-secondary {
-        @apply border border-gray-300 bg-gray-100 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 ease-in-out font-semibold shadow-sm hover:shadow-md;
-    }
-
-    .button-secondary-outline {
-        @apply border border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-100 transition-all duration-300 ease-in-out font-medium;
-    }
-
     /* Animation for tab content */
     @keyframes fade-in {
         from {

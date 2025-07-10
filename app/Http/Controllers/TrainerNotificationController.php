@@ -41,6 +41,6 @@ class TrainerNotificationController extends Controller
         ]);
         
 
-        return redirect()->back()->with('success', 'Notifikasi berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Reminder successfully added!');
     }
 }

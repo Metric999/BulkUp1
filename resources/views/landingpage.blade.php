@@ -57,6 +57,31 @@
       box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+    /* Footer */
+/* Footer */
+.footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+}
+.footer .social-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+.footer .social-links li {
+    margin: 0 10px;
+}
+.footer .social-links a {
+    color: white;
+    text-decoration: white;
+    font-size: 1.2rem;
+}
+.footer .social-links a:hover {
+    color:rgb(69, 95, 197);
+}
   </style>
 </head>
 <body class="bg-[#1F2937] text-white w-full min-h-screen">
@@ -193,6 +218,17 @@
       </div>
     </div>
   </section>
+  <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 All right reserved.</p>
+                <ul class="social-links">
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+        </footer>
 
   <!-- JS for mobile menu, smooth scroll, fade-in and carousel -->
   <script>
