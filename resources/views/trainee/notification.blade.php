@@ -9,7 +9,7 @@
         <div class="p-6 border-b flex justify-between items-center bg-blue-50">
             <h2 class="text-2xl font-bold text-gray-800">🔔 Reminder</h2>
         </div>
-
+        /**
         <!-- Isi Notifikasi -->
         <div class="divide-y divide-gray-200">
             @forelse ($notifications as $notification)

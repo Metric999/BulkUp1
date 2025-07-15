@@ -1,5 +1,5 @@
 @extends('layouts.trainee')
-
+/**
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
     <div class="max-w-6xl mx-auto space-y-8 px-4 sm:px-6 py-8">

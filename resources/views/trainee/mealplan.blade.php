@@ -8,7 +8,7 @@
     </svg>
     Today's Meal Plan
   </h2>
-
+  /**
   {{-- Tambahkan pesan sukses/error/warning --}}
   @if (session('success'))
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md relative mt-4" role="alert">

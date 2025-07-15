@@ -10,7 +10,7 @@
         <button id="bmiLink" onclick="showTab('bmiTab')" class="nav-button">BMI Calculator</button>
     </nav>
 </header>
-
+/**
 <div id="progressTab" class="p-6 space-y-8 animate-fade-in">
     {{-- Quote --}}
     @php

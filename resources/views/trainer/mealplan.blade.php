@@ -102,10 +102,7 @@
                             @method('PUT')
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block font-medium">Date</label>
-                                    <input type="date" name="date" value="{{ $meal->date }}" class="w-full border p-2 rounded">
-                                </div>
+                                
                                 <div>
                                     <label class="block font-medium">Time</label>
                                     <input type="time" name="time" value="{{ $meal->time }}" class="w-full border p-2 rounded">
