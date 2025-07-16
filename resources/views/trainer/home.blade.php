@@ -31,7 +31,7 @@
           <div class="space-x-2">
             <a href="workout?trainee_id={{ $trainee['id'] }}" class="text-blue-500 hover:underline text-sm">Workout</a>
             <a href="mealplan?trainee_id={{ $trainee['id'] }}" class="text-green-500 hover:underline text-sm">Meal Plan</a>
-            <a href="progress?trainee_id={{ $trainee['id'] }}" class="text-red-500 hover:underline text-sm">Progress</a>
+            <a href="progress?trainee_id={{ $trainee['id'] }}" class="text-red-500 hover:underline text-sm">History</a>
           </div>
         </li>
       @endforeach

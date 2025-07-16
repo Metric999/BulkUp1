@@ -6,11 +6,10 @@
 <header class="bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg p-5 flex flex-col md:flex-row justify-between items-center text-white">
     <h1 class="text-3xl font-extrabold mb-3 md:mb-0">Dashboard</h1>
     <nav class="space-x-4 sm:space-x-6 flex flex-wrap justify-center">
-        <button id="progressLink" onclick="showTab('progressTab')" class="nav-button active">Progress</button>
+        <button id="progressLink" onclick="showTab('progressTab')" class="nav-button active">History</button>
         <button id="bmiLink" onclick="showTab('bmiTab')" class="nav-button">BMI Calculator</button>
     </nav>
 </header>
-/**
 <div id="progressTab" class="p-6 space-y-8 animate-fade-in">
     {{-- Quote --}}
     @php
@@ -31,7 +30,7 @@
 
     {{-- Progress Summary --}}
     <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-        <h2 class="text-2xl font-bold text-gray-800 mb-5">Your Progress Overview</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-5">Your History Overview</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-blue-50 p-5 rounded-lg border border-blue-200 flex items-center justify-between transition-transform transform hover:scale-105">
                 <div class="flex items-center space-x-3">
@@ -65,9 +64,6 @@
         </div>
     </div>
 </div>
-
----
-
 <main id="bmiTab" class="hidden max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 animate-fade-in">
     {{-- Form --}}
     <div class="bg-white rounded-xl p-7 shadow-lg border border-gray-200">
@@ -119,7 +115,7 @@
 <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 hidden animate-fade-in">
     <div class="bg-white p-7 rounded-xl shadow-2xl w-full max-w-md md:max-w-lg lg:max-w-xl max-h-[90vh] overflow-y-auto transform scale-95 opacity-0 transition-all duration-300 ease-out" id="modalContentWrapper">
         <div class="flex justify-between items-center mb-5 border-b pb-3">
-            <h2 id="modalTitle" class="text-2xl font-bold text-gray-800">Detail Progress</h2>
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-800">Detail History</h2>
             <button onclick="hideDetailModal()" class="text-gray-500 hover:text-gray-800 text-3xl font-bold transition-transform transform hover:rotate-90">&times;</button>
         </div>
         <div id="modalContent" class="text-gray-700 text-base leading-relaxed">

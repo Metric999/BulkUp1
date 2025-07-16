@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="flex-1 p-8 overflow-auto">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800">Progress Trainee</h1>
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">History Trainee</h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($trainees as $trainee)
@@ -34,7 +34,7 @@
             <a href="home" class="text-white hover:text-gray-300">Home</a>
             <a href="workout" class="text-white hover:text-gray-300">Workout</a>
             <a href="mealplan" class="text-white hover:text-gray-300">Mealplan</a>
-            <a href="progress" class="text-blue-500 underline font-semibold">Progress</a>
+            <a href="progress" class="text-blue-500 underline font-semibold">History</a>
             <div class="relative cursor-pointer">
                 <button id="profileBtn" class="text-white text-xl focus:outline-none">👤</button>
                 <div id="dropdownMenu" class="absolute right-0 mt-2 hidden bg-gray-700 rounded shadow-md p-4 space-y-2 z-10 w-40">

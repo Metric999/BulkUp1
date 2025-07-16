@@ -59,7 +59,7 @@
               <path class="cls-1" d="M7,18a1,1,0,0,0,.79-.39L11.36,13l2.16,1.85a1,1,0,0,0,.73.24,1,1,0,0,0,.68-.35l6.83-8.07a1,1,0,0,0-1.53-1.29l-6.18,7.3-2.2-1.88a1,1,0,0,0-1.44.15L6.19,16.4A1,1,0,0,0,7,18Z"></path>
           </g>
       </svg>
-        <span>Progress</span>
+        <span>History</span>
       </a>    
 
     <!-- User Dropdown -->
@@ -143,7 +143,7 @@
   <a href="{{ route('trainer.home') }}" class="block text-white hover:text-blue-400">Home</a>
   <a href="{{ route('trainer.workout') }}" class="block text-white hover:text-blue-400">Workout</a>
   <a href="{{ route('trainer.mealplan') }}" class="block text-white hover:text-blue-400">Mealplan</a>
-  <a href="{{ route('trainer.progress') }}" class="block text-white hover:text-blue-400">Progress</a>
+  <a href="{{ route('trainer.progress') }}" class="block text-white hover:text-blue-400">History</a>
   <a href="{{ route('trainer.profile') }}" class="block text-white hover:text-blue-400">Profile</a>
   <a href="{{ route('trainer.notification') }}" class="block text-white hover:text-blue-400">Reminder</a>
   <a href="{{ route('trainer.feedback') }}" class="block text-white hover:text-blue-400">Feedback</a>
