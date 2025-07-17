@@ -36,7 +36,7 @@
                 </div>
             @empty
                 <div class="p-6 text-gray-500 text-center">
-                    No Notifications.
+                    No Reminders.
                 </div>
             @endforelse
         </div>

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
-    <h1 class="text-xl font-semibold mb-4">Add Notification</h1>
+    <h1 class="text-xl font-semibold mb-4">Add Reminders</h1>
 
     @if (session('success'))
         <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
@@ -26,7 +26,7 @@
         </div>
 
         <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded">
-            Send Notification
+            Send Reminders
         </button>
     </form>
 </div>
