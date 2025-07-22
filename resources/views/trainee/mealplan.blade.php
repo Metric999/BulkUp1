@@ -66,7 +66,7 @@
             </form>
           @else
             <span class="inline-block mt-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm">
-              ✅ Submitted
+              ✅ 
             </span>
             {{-- Tombol untuk membatalkan submit --}}
             <form action="{{ route('progress.destroy', $progressSubmissionId) }}" method="POST" class="inline-block ml-2">
@@ -74,7 +74,7 @@
                 @method('DELETE') {{-- Penting untuk metode DELETE --}}
                 <button type="submit"
                         class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm transition-all">
-                    Cancel Submit
+                    Cancel 
                 </button>
             </form>
           @endif

@@ -54,12 +54,12 @@ class ProgressSubmissionController extends Controller
             ->first();
 
         if ($existingSubmission) {
-            return redirect()->back()->with('warning', 'Anda sudah submit item ini hari ini.');
+            return redirect()->back()->with('warning', 'You have already submitted today.');
         }
 
         ProgressSubmission::create($data);
 
-        return redirect()->back()->with('success', 'Progress berhasil disubmit!');
+        return redirect()->back()->with('success', 'Progress was successfully submitted!');
     }
 
     /**
@@ -79,6 +79,6 @@ class ProgressSubmissionController extends Controller
 
         $progressSubmission->delete();
 
-        return redirect()->back()->with('success', 'Progress berhasil dibatalkan!');
+        return redirect()->back()->with('success', 'Progress was successfully canceled!');
     }
 }
